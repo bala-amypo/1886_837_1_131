@@ -1,41 +1,28 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Zone;
-import com.example.demo.service.ZoneServiceImpl;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
+import com.example.demo.repository.ZoneRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/zones")
-@Tag(name = "Zones")
+@RequestMapping("/zones")
 public class ZoneController {
 
-    private final ZoneServiceImpl service;
+    private final ZoneRepository repo;
 
-    public ZoneController(ZoneServiceImpl service) {
-        this.service = service;
+    public ZoneController(ZoneRepository repo) {
+        this.repo = repo;
     }
 
     @PostMapping
-    public Zone create(@RequestBody Zone zone) {
-        return service.createZone(zone);
-    }
-
-    @GetMapping("/{id}")
-    public Zone get(@PathVariable Long id) {
-        return service.get(id);
+    public Zone create(@RequestBody Zone z) {
+        return repo.save(z);
     }
 
     @GetMapping
-    public List<Zone> list() {
-        return service.getAll();
-    }
-
-    @PutMapping("/{id}/deactivate")
-    public Zone deactivate(@PathVariable Long id) {
-        return service.deactivate(id);
+    public List<Zone> all() {
+        return repo.findAll();
     }
 }
