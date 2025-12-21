@@ -28,12 +28,12 @@ public class Zone {
     private Instant updatedAt;
 
     @PrePersist
-    void create() {
+    void onCreate() {
         createdAt = Instant.now();
     }
 
     @PreUpdate
-    void update() {
+    void onUpdate() {
         updatedAt = Instant.now();
     }
 }

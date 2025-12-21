@@ -19,14 +19,16 @@ public class ZoneServiceImpl {
     }
 
     public Zone createZone(Zone z) {
-        if (repo.findByZoneName(z.getZoneName()).isPresent())
+        if (repo.findByZoneName(z.getZoneName()).isPresent()) {
             throw new BadRequestException("Zone name must be unique");
+        }
         return repo.save(z);
     }
 
     public Zone get(Long id) {
         return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Zone not found"));
     }
 
     public List<Zone> getAll() {
