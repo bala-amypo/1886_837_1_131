@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Zone;
-import com.example.demo.repository.ZoneRepository;
+import com.example.demo.service.ZoneServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +10,19 @@ import java.util.List;
 @RequestMapping("/zones")
 public class ZoneController {
 
-    private final ZoneRepository repo;
+    private final ZoneServiceImpl service;
 
-    public ZoneController(ZoneRepository repo) {
-        this.repo = repo;
+    public ZoneController(ZoneServiceImpl service) {
+        this.service = service;
     }
 
     @PostMapping
     public Zone create(@RequestBody Zone z) {
-        return repo.save(z);
+        return service.create(z);
     }
 
     @GetMapping
     public List<Zone> all() {
-        return repo.findAll();
+        return service.getAll();
     }
 }
