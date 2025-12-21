@@ -1,3 +1,13 @@
+package com.example.demo.controller;
+
+import com.example.demo.entity.Zone;
+import com.example.demo.service.ZoneServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/zones")
 @Tag(name = "Zones")

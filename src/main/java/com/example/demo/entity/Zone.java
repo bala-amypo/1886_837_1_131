@@ -2,10 +2,12 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.Instant;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -26,12 +28,12 @@ public class Zone {
     private Instant updatedAt;
 
     @PrePersist
-    void onCreate() {
+    void create() {
         createdAt = Instant.now();
     }
 
     @PreUpdate
-    void onUpdate() {
+    void update() {
         updatedAt = Instant.now();
     }
 }
