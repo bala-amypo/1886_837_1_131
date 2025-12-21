@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Zone;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.ZoneRepository;
 import org.springframework.stereotype.Service;
 
@@ -9,17 +10,46 @@ import java.util.List;
 @Service
 public class ZoneServiceImpl {
 
-    private final ZoneRepository repo;
+    private final ZoneRepository repository;
 
-    public ZoneServiceImpl(ZoneRepository repo) {
-        this.repo = repo;
+    public ZoneServiceImpl(ZoneRepository repository) {
+        this.repository = repository;
     }
 
-    public Zone create(Zone z) {
-        return repo.save(z);
+    public Zone createZone(Zone zone) {
+        return repository.save(zone);
     }
 
-    public List<Zone> getAll() {
-        return repo.findAll();
+    public Zone updateZone(Long id, Zone zone) {
+        Zone existing = getZoneById(id);
+        existing.setZoneName(zone.getZoneName());
+        existing.setPriorityLevel(zone.getPriorityLevel());
+        existing.setPopulation(zone.getPopulation());
+        return repository.save(existing);
     }
+
+    public Zone getZoneById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+    }
+
+    public List<Zone> getAllZones() {
+        return repository.findAll();
+    }
+
+    public Zone deactivateZone(Long id) {
+        Zone zone = getZoneById(id);
+        zone.setActive(false);
+        return repository.save(zone);
+    }
+}
+
+public Zone updateZone(Long id, Zone zone) {
+    Zone existing = getZoneById(id);
+
+    existing.setZoneName(zone.getZoneName());
+    existing.setPriorityLevel(zone.getPriorityLevel());
+    existing.setPopulation(zone.getPopulation());
+
+    return repository.save(existing);
 }
