@@ -23,8 +23,6 @@ public class ZoneServiceImpl {
     public Zone updateZone(Long id, Zone zone) {
         Zone existing = getZoneById(id);
         existing.setZoneName(zone.getZoneName());
-        existing.setPriorityLevel(zone.getPriorityLevel());
-        existing.setPopulation(zone.getPopulation());
         return repository.save(existing);
     }
 
@@ -42,14 +40,4 @@ public class ZoneServiceImpl {
         zone.setActive(false);
         return repository.save(zone);
     }
-}
-
-public Zone updateZone(Long id, Zone zone) {
-    Zone existing = getZoneById(id);
-
-    existing.setZoneName(zone.getZoneName());
-    existing.setPriorityLevel(zone.getPriorityLevel());
-    existing.setPopulation(zone.getPopulation());
-
-    return repository.save(existing);
 }
