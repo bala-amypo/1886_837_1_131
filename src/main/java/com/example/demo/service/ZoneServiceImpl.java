@@ -1,43 +1,23 @@
-package com.example.demo.service;
+package com.example.demo.security;
 
-import com.example.demo.entity.Zone;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.ZoneRepository;
-import org.springframework.stereotype.Service;
+import org.testng.ITestContext;
+import org.testng.ITestListener;
+import org.testng.ITestResult;
 
-import java.util.List;
+public class Listeners implements ITestListener {
 
-@Service
-public class ZoneServiceImpl {
+    @Override
+    public void onTestStart(ITestResult result) {}
 
-    private final ZoneRepository repository;
+    @Override
+    public void onTestSuccess(ITestResult result) {}
 
-    public ZoneServiceImpl(ZoneRepository repository) {
-        this.repository = repository;
-    }
+    @Override
+    public void onTestFailure(ITestResult result) {}
 
-    public Zone createZone(Zone zone) {
-        return repository.save(zone);
-    }
+    @Override
+    public void onStart(ITestContext context) {}
 
-    public Zone updateZone(Long id, Zone zone) {
-        Zone existing = getZoneById(id);
-        existing.setZoneName(zone.getZoneName());
-        return repository.save(existing);
-    }
-
-    public Zone getZoneById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
-    }
-
-    public List<Zone> getAllZones() {
-        return repository.findAll();
-    }
-
-    public Zone deactivateZone(Long id) {
-        Zone zone = getZoneById(id);
-        zone.setActive(false);
-        return repository.save(zone);
-    }
+    @Override
+    public void onFinish(ITestContext context) {}
 }
