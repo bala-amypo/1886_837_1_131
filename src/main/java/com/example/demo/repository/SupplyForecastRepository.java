@@ -1,4 +1,3 @@
-package com.example.demo.service;
 
 import java.util.List;
 
@@ -14,22 +13,18 @@ public class SupplyForecastServiceImpl {
     @Autowired
     private SupplyForecastRepository supplyForecastRepository;
 
-    // CREATE
     public SupplyForecast saveSupplyForecast(SupplyForecast supplyForecast) {
         return supplyForecastRepository.save(supplyForecast);
     }
 
-    // READ ALL
     public List<SupplyForecast> getAllSupplyForecasts() {
         return supplyForecastRepository.findAll();
     }
 
-    // READ BY ID
     public SupplyForecast getSupplyForecastById(Long id) {
         return supplyForecastRepository.findById(id).orElse(null);
     }
 
-    // UPDATE
     public SupplyForecast updateSupplyForecast(Long id, SupplyForecast updatedForecast) {
         SupplyForecast existing = supplyForecastRepository.findById(id).orElse(null);
         if (existing != null) {
@@ -40,7 +35,6 @@ public class SupplyForecastServiceImpl {
         return null;
     }
 
-    // DELETE
     public void deleteSupplyForecast(Long id) {
         supplyForecastRepository.deleteById(id);
     }
