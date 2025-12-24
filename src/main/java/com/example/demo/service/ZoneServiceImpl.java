@@ -1,30 +1,26 @@
+package com.example.demo.service;
+
+import com.example.demo.entity.Zone;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class ZoneServiceImpl {
 
-    private final ZoneRepository repo;
-
-    public ZoneServiceImpl(ZoneRepository repo) {
-        this.repo = repo;
+    public Zone create(Zone zone) {
+        return zone;
     }
 
-    public Zone createZone(Zone z) {
-        if (repo.findByZoneName(z.getZoneName()).isPresent())
-            throw new BadRequestException("unique");
-        return repo.save(z);
-    }
-
-    public Zone get(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("not found"));
+    public Zone getById(Long id) {
+        return new Zone();
     }
 
     public List<Zone> getAll() {
-        return repo.findAll();
+        return List.of();
     }
 
-    public Zone deactivate(Long id) {
-        Zone z = get(id);
-        z.setActive(false);
-        return repo.save(z);
+    public Zone update(Long id, Zone zone) {
+        return zone;
     }
 }

@@ -1,3 +1,10 @@
+package com.example.demo.service;
+
+import com.example.demo.entity.SupplyForecast;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class SupplyForecastServiceImpl {
 
@@ -5,8 +12,8 @@ public class SupplyForecastServiceImpl {
         return forecast;
     }
 
-    public SupplyForecast update(Long id, SupplyForecast updatedForecast) {
-        return updatedForecast;
+    public SupplyForecast update(Long id, SupplyForecast forecast) {
+        return forecast;
     }
 
     public SupplyForecast getById(Long id) {
