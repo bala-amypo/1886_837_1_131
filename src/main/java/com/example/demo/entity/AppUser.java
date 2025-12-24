@@ -1,13 +1,11 @@
 package com.example.demo.entity;
 
 import lombok.*;
-import java.time.Instant;
 
 @Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class DemandReading {
+public class AppUser {
     private Long id;
-    private Zone zone;
-    private Double demandMW;
-    private Instant recordedAt;
+    private String email;
+    private String role;
 }
