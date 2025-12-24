@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DemandReadingRepository
-        extends JpaRepository<DemandReading, Long> {
+public interface DemandReadingRepository extends JpaRepository<DemandReading, Long> {
 
+    // Latest reading for a zone
     DemandReading findFirstByZoneIdOrderByRecordedAtDesc(Long zoneId);
 
-    List<DemandReading> findByZoneIdOrderByRecordedAtDesc(Long zoneId);
+    // All readings for a zone
+    List<DemandReading> findByZoneId(Long zoneId);
 }
