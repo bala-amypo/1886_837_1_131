@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,24 +11,33 @@ public class SupplyForecast {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productName;
-    private int quantity;
+    private LocalDate forecastDate;
+    private double quantity;
 
-    private LocalDateTime generatedAt;   // ✅ REQUIRED FIELD
+    private LocalDateTime generatedAt;
 
+    // ✅ No-arg constructor (required by JPA)
     public SupplyForecast() {
-        this.generatedAt = LocalDateTime.now(); // auto set
+        this.generatedAt = LocalDateTime.now();
+    }
+
+    // ✅ Parameterized constructor (FIX)
+    public SupplyForecast(Long id, LocalDate forecastDate, double quantity) {
+        this.id = id;
+        this.forecastDate = forecastDate;
+        this.quantity = quantity;
+        this.generatedAt = LocalDateTime.now();
     }
 
     // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getProductName() { return productName; }
-    public void setProductName(String productName) { this.productName = productName; }
+    public LocalDate getForecastDate() { return forecastDate; }
+    public void setForecastDate(LocalDate forecastDate) { this.forecastDate = forecastDate; }
 
-    public int getQuantity() { return quantity; }
-    public void setQuantity(int quantity) { this.quantity = quantity; }
+    public double getQuantity() { return quantity; }
+    public void setQuantity(double quantity) { this.quantity = quantity; }
 
     public LocalDateTime getGeneratedAt() { return generatedAt; }
     public void setGeneratedAt(LocalDateTime generatedAt) { this.generatedAt = generatedAt; }
