@@ -1,19 +1,29 @@
 package com.example.demo.entity;
 
-import lombok.*;
-
 import jakarta.persistence.*;
+import java.time.Instant;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class LoadShedding {
+public class LoadSheddingEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long zoneId;
-    private boolean active;
+    @ManyToOne
+    private Zone zone;
+
+    private Long shedMW;
+    private Instant eventStart;
+
+    public Long getId() { return id; }
+
+    public Zone getZone() { return zone; }
+    public void setZone(Zone zone) { this.zone = zone; }
+
+    public Long getShedMW() { return shedMW; }
+    public void setShedMW(Long shedMW) { this.shedMW = shedMW; }
+
+    public Instant getEventStart() { return eventStart; }
+    public void setEventStart(Instant eventStart) { this.eventStart = eventStart; }
 }
