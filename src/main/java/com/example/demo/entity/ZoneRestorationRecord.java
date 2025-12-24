@@ -1,13 +1,10 @@
-package com.example.demo.entity;
 
-import lombok.*;
-
-import jakarta.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ZoneRestorationRecord {
 
     @Id
@@ -15,4 +12,8 @@ public class ZoneRestorationRecord {
     private Long id;
 
     private Long zoneId;
+
+    private LocalDateTime restoredAt;   // ✅ ADD THIS FIELD
+
+    private String status;
 }
