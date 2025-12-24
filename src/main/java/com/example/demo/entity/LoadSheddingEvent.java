@@ -10,20 +10,46 @@ public class LoadSheddingEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Zone zone;
-
-    private Long shedMW;
+    private double totalDemand;
+    private double totalSupply;
+    private String status;
     private Instant eventStart;
 
-    public Long getId() { return id; }
+    // ===== GETTERS =====
+    public Long getId() {
+        return id;
+    }
 
-    public Zone getZone() { return zone; }
-    public void setZone(Zone zone) { this.zone = zone; }
+    public double getTotalDemand() {
+        return totalDemand;
+    }
 
-    public Long getShedMW() { return shedMW; }
-    public void setShedMW(Long shedMW) { this.shedMW = shedMW; }
+    public double getTotalSupply() {
+        return totalSupply;
+    }
 
-    public Instant getEventStart() { return eventStart; }
-    public void setEventStart(Instant eventStart) { this.eventStart = eventStart; }
+    public String getStatus() {
+        return status;
+    }
+
+    public Instant getEventStart() {
+        return eventStart;
+    }
+
+    // ===== SETTERS =====
+    public void setTotalDemand(double totalDemand) {
+        this.totalDemand = totalDemand;
+    }
+
+    public void setTotalSupply(double totalSupply) {
+        this.totalSupply = totalSupply;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setEventStart(Instant eventStart) {
+        this.eventStart = eventStart;
+    }
 }
