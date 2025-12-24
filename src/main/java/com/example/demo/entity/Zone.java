@@ -1,38 +1,44 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.Instant;
 
 @Entity
+@Table(name = "zones")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Zone {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String zoneName;
-    private Integer priorityLevel;
-    private Long population;
+    @Column(unique = true, nullable = false)
+    private String zoneName;  // must be unique → "unique" error on duplicate
+
+    private Integer priorityLevel; // >=1
+
+    private Integer population;
+
     private Boolean active;
+
     private Instant createdAt;
+
     private Instant updatedAt;
 
-    public Long getId() { return id; }
-    public String getZoneName() { return zoneName; }
-    public void setZoneName(String zoneName) { this.zoneName = zoneName; }
+    @PrePersist
+    public void onCreate() {
+        if (active == null) active = true;
+        createdAt = Instant.now();
+        updatedAt = Instant.now();
+    }
 
-    public Integer getPriorityLevel() { return priorityLevel; }
-    public void setPriorityLevel(Integer priorityLevel) { this.priorityLevel = priorityLevel; }
-
-    public Long getPopulation() { return population; }
-    public void setPopulation(Long population) { this.population = population; }
-
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
-
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
-
-    public Instant getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(Instant updatedAt) { this.updatedAt = updatedAt; }
+    @PreUpdate
+    public void onUpdate() {
+        updatedAt = Instant.now();
+    }
 }
