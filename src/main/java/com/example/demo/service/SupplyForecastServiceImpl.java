@@ -1,33 +1,46 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
-import com.example.demo.entity.SupplyForecast;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
+import com.example.demo.entity.*;
+import com.example.demo.exception.*;
+import com.example.demo.repository.*;
+import java.time.Instant;
 import java.util.*;
 
-@Service
 public class SupplyForecastServiceImpl {
 
-    public SupplyForecast create(SupplyForecast forecast) {
-        forecast.setId(1L);
-        return forecast;
+    private final SupplyForecastRepository repo;
+
+    public SupplyForecastServiceImpl(SupplyForecastRepository r) {
+        repo = r;
     }
 
-    public SupplyForecast update(Long id, SupplyForecast forecast) {
-        forecast.setId(id);
-        return forecast;
+    public SupplyForecast createForecast(SupplyForecast s) {
+        if (s.getAvailableSupplyMW() < 0)
+            throw new BadRequestException(">= 0");
+
+        if (s.getForecastStart().isAfter(s.getForecastEnd()))
+            throw new BadRequestException("range");
+
+        s.setGeneratedAt(Instant.now());
+        return repo.save(s);
     }
 
-    public SupplyForecast getById(Long id) {
-        return new SupplyForecast(id, LocalDate.now(), 500.0);
+    public SupplyForecast updateForecast(Long id, SupplyForecast s) {
+        SupplyForecast e = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Forecast not found"));
+
+        e.setAvailableSupplyMW(s.getAvailableSupplyMW());
+        e.setForecastStart(s.getForecastStart());
+        e.setForecastEnd(s.getForecastEnd());
+        return repo.save(e);
     }
 
-    public SupplyForecast getLatest() {
-        return new SupplyForecast(1L, LocalDate.now(), 550.0);
+    public SupplyForecast getLatestForecast() {
+        return repo.findFirstByOrderByGeneratedAtDesc()
+                .orElseThrow(() -> new ResourceNotFoundException("No forecasts"));
     }
 
-    public List<SupplyForecast> getAll() {
-        return List.of(getLatest());
+    public List<SupplyForecast> getAllForecasts() {
+        return repo.findAll();
     }
 }

@@ -1,53 +1,44 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
-import com.example.demo.entity.ZoneRestorationRecord;
-import com.example.demo.repository.ZoneRestorationRecordRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.demo.entity.*;
+import com.example.demo.exception.*;
+import com.example.demo.repository.*;
+import java.time.Instant;
+import java.util.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+public class ZoneRestorationServiceImpl {
 
-@Service
-public class ZoneRestorationServiceImpl implements ZoneRestorationService {
+    private final ZoneRestorationRecordRepository repo;
+    private final LoadSheddingEventRepository eventRepo;
+    private final ZoneRepository zoneRepo;
 
-    @Autowired
-    private ZoneRestorationRecordRepository repository;
-
-    @Override
-    public List<ZoneRestorationRecord> getAllRecords() {
-        return repository.findAll();
+    public ZoneRestorationServiceImpl(
+            ZoneRestorationRecordRepository r,
+            LoadSheddingEventRepository e,
+            ZoneRepository z) {
+        repo = r; eventRepo = e; zoneRepo = z;
     }
 
-    @Override
+    public ZoneRestorationRecord restoreZone(ZoneRestorationRecord r) {
+        LoadSheddingEvent ev = eventRepo.findById(r.getEventId())
+                .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        Zone z = zoneRepo.findById(r.getZone().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+
+        if (r.getRestoredAt().isBefore(ev.getEventStart()))
+            throw new BadRequestException("after event start");
+
+        r.setZone(z);
+        return repo.save(r);
+    }
+
+    public List<ZoneRestorationRecord> getRecordsForZone(Long zoneId) {
+        return repo.findByZoneIdOrderByRestoredAtDesc(zoneId);
+    }
+
     public ZoneRestorationRecord getRecordById(Long id) {
-        Optional<ZoneRestorationRecord> record = repository.findById(id);
-        return record.orElse(null);
-    }
-
-    @Override
-    public ZoneRestorationRecord saveRecord(Long zoneId, String status) {
-        ZoneRestorationRecord record = new ZoneRestorationRecord();
-        record.setZoneId(zoneId);
-        record.setTime(LocalDateTime.now());
-        record.setStatus(status != null ? status : "PENDING");
-        return repository.save(record);
-    }
-
-    @Override
-    public void deleteRecord(Long id) {
-        repository.deleteById(id);
-    }
-
-    @Override
-    public ZoneRestorationRecord updateStatus(Long id, String status) {
-        Optional<ZoneRestorationRecord> optionalRecord = repository.findById(id);
-        if (optionalRecord.isPresent()) {
-            ZoneRestorationRecord record = optionalRecord.get();
-            record.setStatus(status);
-            return repository.save(record);
-        }
-        return null;
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Record not found"));
     }
 }
