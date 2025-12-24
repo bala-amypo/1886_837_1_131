@@ -1,35 +1,47 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.DemandReading;
-import com.example.demo.service.DemandReadingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.entity.DemandReading;
+import com.example.demo.service.DemandReadingServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/readings")
+@RequestMapping("/api/demand-readings")
+@Tag(name = "Demand Readings")
 public class DemandReadingController {
 
-    @Autowired
-    private DemandReadingService service;
+    private final DemandReadingServiceImpl service;
 
-    @GetMapping
-    public List<DemandReading> getAllReadings() {
-        return service.getAllReadings();
-    }
-
-    @GetMapping("/{id}")
-    public DemandReading getReadingById(@PathVariable Long id) {
-        return service.getReadingById(id);
+    public DemandReadingController(DemandReadingServiceImpl service) {
+        this.service = service;
     }
 
     @PostMapping
-    public DemandReading saveReading(@RequestBody DemandReading reading) {
-        return service.saveReading(reading);
+    public DemandReading create(@RequestBody DemandReading reading) {
+        return service.create(reading);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteReading(@PathVariable Long id) {
-        service.deleteReading(id);
+    @GetMapping("/{id}")
+    public DemandReading getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
+    @GetMapping("/zone/{zoneId}")
+    public List<DemandReading> getByZone(@PathVariable Long zoneId) {
+        return service.getByZone(zoneId);
+    }
+
+    @GetMapping("/zone/{zoneId}/latest")
+    public DemandReading getLatest(@PathVariable Long zoneId) {
+        return service.getLatest(zoneId);
+    }
+
+    @GetMapping("/zone/{zoneId}/recent")
+    public List<DemandReading> getRecent(
+            @PathVariable Long zoneId,
+            @RequestParam(defaultValue = "5") int limit) {
+        return service.getRecent(zoneId, limit);
     }
 }
