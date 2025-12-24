@@ -1,13 +1,22 @@
 package com.example.demo.entity;
 
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;   // ✅ REQUIRED IMPORT
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ZoneRestorationRecord {
 
     @Id
@@ -15,4 +24,8 @@ public class ZoneRestorationRecord {
     private Long id;
 
     private Long zoneId;
+
+    private LocalDateTime restoredAt;   // ✅ NOW COMPILER KNOWS THIS
+
+    private String status;
 }
