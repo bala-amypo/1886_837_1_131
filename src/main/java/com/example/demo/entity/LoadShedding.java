@@ -3,18 +3,24 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Zone {
+public class LoadShedding {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String zoneName;
+    private Long zoneId;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
 
     private boolean active;
 }
