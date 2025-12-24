@@ -10,3 +10,4 @@ public interface ZoneRestorationRecordRepository
 
     List<ZoneRestorationRecord> findByZoneIdOrderByRestoredAtDesc(Long zoneId);
 }
+

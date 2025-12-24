@@ -1,9 +1,13 @@
 package com.example.demo.entity;
 
+import lombok.*;
+
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ZoneRestorationRecord {
 
     @Id
@@ -11,25 +15,4 @@ public class ZoneRestorationRecord {
     private Long id;
 
     private Long zoneId;
-    private LocalDateTime time;
-    private String status;
-
-    public ZoneRestorationRecord() { }
-
-    public ZoneRestorationRecord(Long id, Long zoneId, LocalDateTime time, String status) {
-        this.id = id;
-        this.zoneId = zoneId;
-        this.time = time;
-        this.status = status;
-    }
-
-    // ✅ Add this constructor for 2 parameters
-    public ZoneRestorationRecord(Long id, Long zoneId) {
-        this.id = id;
-        this.zoneId = zoneId;
-        this.time = LocalDateTime.now(); // default current time
-        this.status = "PENDING";         // default status
-    }
-
-    // getters and setters ...
 }
