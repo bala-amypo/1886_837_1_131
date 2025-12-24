@@ -1,7 +1,8 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+
+import jakarta.persistence.*;
 
 @Entity
 @Data
@@ -15,6 +16,5 @@ public class Zone {
     private Long id;
 
     private String zoneName;
-
     private boolean active;
 }

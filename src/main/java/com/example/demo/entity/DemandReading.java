@@ -1,12 +1,11 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
-import java.time.Instant;
+
+import jakarta.persistence.*;
 
 @Entity
-@Getter @Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class DemandReading {
@@ -15,9 +14,6 @@ public class DemandReading {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Zone zone;
-
-    private Double demandMW;
-    private Instant recordedAt;
+    private Long zoneId;
+    private Double value;
 }

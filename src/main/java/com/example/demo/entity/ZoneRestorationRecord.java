@@ -1,12 +1,11 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
-import java.time.Instant;
+
+import jakarta.persistence.*;
 
 @Entity
-@Getter @Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ZoneRestorationRecord {
@@ -15,10 +14,5 @@ public class ZoneRestorationRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Zone zone;
-
-    private Instant restoredAt;
-    private Long eventId;
-    private String notes;
+    private Long zoneId;
 }

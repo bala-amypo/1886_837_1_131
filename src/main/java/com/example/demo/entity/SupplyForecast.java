@@ -1,8 +1,8 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
 
+import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -17,6 +17,5 @@ public class SupplyForecast {
     private Long id;
 
     private LocalDate forecastDate;
-
     private Double expectedSupply;
 }
