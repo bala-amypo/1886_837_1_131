@@ -6,26 +6,20 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "demand_readings")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DemandReading {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    private Zone zone;
+    // IMPORTANT: This MUST exist for the repository query
+    private Long zoneId;     
 
-    private Double demandMW;  // >=0
+    private double demandMW;
 
-    private Instant recordedAt;  // not future
-
-    @PrePersist
-    public void prePersist() {
-        if (recordedAt == null) recordedAt = Instant.now();
-    }
+    private Instant recordedAt;
 }

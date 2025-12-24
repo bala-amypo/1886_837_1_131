@@ -1,31 +1,55 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.Instant;
 
 @Entity
-@Table(name = "load_shedding_events")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class LoadSheddingEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    private Zone zone;
-
+    private double totalDemand;
+    private double totalSupply;
+    private String status;
     private Instant eventStart;
-    private Instant eventEnd;
 
-    private String reason;
+    // ===== GETTERS =====
+    public Long getId() {
+        return id;
+    }
 
-    private Long triggeredByForecastId;
+    public double getTotalDemand() {
+        return totalDemand;
+    }
 
-    private Double expectedDemandReductionMW; // >=0
+    public double getTotalSupply() {
+        return totalSupply;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public Instant getEventStart() {
+        return eventStart;
+    }
+
+    // ===== SETTERS =====
+    public void setTotalDemand(double totalDemand) {
+        this.totalDemand = totalDemand;
+    }
+
+    public void setTotalSupply(double totalSupply) {
+        this.totalSupply = totalSupply;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setEventStart(Instant eventStart) {
+        this.eventStart = eventStart;
+    }
 }

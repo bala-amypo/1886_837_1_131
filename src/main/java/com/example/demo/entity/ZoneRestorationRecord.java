@@ -1,28 +1,31 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.Instant;
 
 @Entity
-@Table(name = "zone_restoration_records")
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ZoneRestorationRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Zone zone;
 
-    private Instant restoredAt; // must be AFTER eventStart
+    @ManyToOne
+    private LoadSheddingEvent event;
 
-    private Long eventId;
+    private Instant restoredAt;
 
-    private String notes;
+    public Long getId() { return id; }
+
+    public Zone getZone() { return zone; }
+    public void setZone(Zone zone) { this.zone = zone; }
+
+    public LoadSheddingEvent getEvent() { return event; }
+    public void setEvent(LoadSheddingEvent event) { this.event = event; }
+
+    public Instant getRestoredAt() { return restoredAt; }
+    public void setRestoredAt(Instant restoredAt) { this.restoredAt = restoredAt; }
 }
