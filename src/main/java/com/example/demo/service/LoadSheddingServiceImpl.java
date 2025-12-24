@@ -1,17 +1,15 @@
-package com.example.demo.service;
-
-import com.example.demo.entity.LoadSheddingEvent;
-import org.springframework.stereotype.Service;
-import java.util.*;
-
 @Service
 public class LoadSheddingServiceImpl {
 
-    public LoadSheddingEvent save(LoadSheddingEvent e) {
-        return e;
+    public LoadShedding trigger(Long zoneId) {
+        return new LoadShedding();
     }
 
-    public List<LoadSheddingEvent> getByZone(Long zoneId) {
-        return new ArrayList<>();
+    public LoadShedding getById(Long id) {
+        return new LoadShedding();
+    }
+
+    public List<LoadShedding> getAll() {
+        return List.of();
     }
 }

@@ -1,17 +1,19 @@
-package com.example.demo.service;
-
-import com.example.demo.entity.DemandReading;
-import org.springframework.stereotype.Service;
-import java.util.*;
-
 @Service
 public class DemandReadingServiceImpl {
 
-    public DemandReading save(DemandReading d) {
-        return d;
+    public DemandReading create(DemandReading reading) {
+        return reading;
     }
 
-    public List<DemandReading> getByZone(Long zoneId) {
-        return new ArrayList<>();
+    public DemandReading getById(Long id) {
+        return new DemandReading();
+    }
+
+    public DemandReading getLatest(Long zoneId) {
+        return new DemandReading();
+    }
+
+    public List<DemandReading> getRecent(Long zoneId, int limit) {
+        return List.of();
     }
 }
