@@ -1,35 +1,37 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.DemandReading;
+import com.example.demo.model.DemandReading;
+import com.example.demo.repository.DemandReadingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class DemandReadingServiceImpl {
+public class DemandReadingServiceImpl implements DemandReadingService {
 
-    public DemandReading create(DemandReading reading) {
-        reading.setId(1L);
-        return reading;
+    @Autowired
+    private DemandReadingRepository repository;
+
+    @Override
+    public List<DemandReading> getAllReadings() {
+        return repository.findAll();
     }
 
-    public DemandReading getById(Long id) {
-        return new DemandReading(id, 1L, 120.0);
+    @Override
+    public DemandReading getReadingById(Long id) {
+        Optional<DemandReading> reading = repository.findById(id);
+        return reading.orElse(null);
     }
 
-    // 🔥 ADD THIS METHOD
-    public List<DemandReading> getByZone(Long zoneId) {
-        return List.of(
-                new DemandReading(1L, zoneId, 130.0),
-                new DemandReading(2L, zoneId, 140.0)
-        );
+    @Override
+    public DemandReading saveReading(DemandReading reading) {
+        return repository.save(reading);
     }
 
-    public DemandReading getLatest(Long zoneId) {
-        return new DemandReading(3L, zoneId, 150.0);
-    }
-
-    public List<DemandReading> getRecent(Long zoneId, int limit) {
-        return List.of(new DemandReading(4L, zoneId, 145.0));
+    @Override
+    public void deleteReading(Long id) {
+        repository.deleteById(id);
     }
 }
