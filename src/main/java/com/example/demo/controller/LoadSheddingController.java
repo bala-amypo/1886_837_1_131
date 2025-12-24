@@ -1,15 +1,13 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.LoadSheddingEvent;
+import com.example.demo.entity.LoadShedding;
 import com.example.demo.service.LoadSheddingServiceImpl;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/load-shedding")
-@Tag(name = "Load Shedding")
+@RequestMapping("/load-shedding")
 public class LoadSheddingController {
 
     private final LoadSheddingServiceImpl service;
@@ -18,23 +16,13 @@ public class LoadSheddingController {
         this.service = service;
     }
 
-    @PostMapping("/trigger/{forecastId}")
-    public LoadSheddingEvent trigger(@PathVariable Long forecastId) {
-        return service.trigger(forecastId);
+    @PostMapping
+    public LoadShedding create(@RequestBody LoadShedding event) {
+        return service.create(event);
     }
 
-    @GetMapping("/{id}")
-    public LoadSheddingEvent getById(@PathVariable Long id) {
-        return service.getById(id);
-    }
-
-    @GetMapping("/zone/{zoneId}")
-    public List<LoadSheddingEvent> getByZone(@PathVariable Long zoneId) {
+    @GetMapping("/{zoneId}")
+    public List<LoadShedding> getByZone(@PathVariable Long zoneId) {
         return service.getByZone(zoneId);
-    }
-
-    @GetMapping
-    public List<LoadSheddingEvent> getAll() {
-        return service.getAll();
     }
 }

@@ -3,6 +3,9 @@ package com.example.demo.service;
 import com.example.demo.entity.ZoneRestorationRecord;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ZoneRestorationServiceImpl {
 
@@ -10,7 +13,7 @@ public class ZoneRestorationServiceImpl {
         return record;
     }
 
-    public ZoneRestorationRecord getById(Long id) {
-        return new ZoneRestorationRecord();
+    public List<ZoneRestorationRecord> getByZone(Long zoneId) {
+        return new ArrayList<>();
     }
 }
