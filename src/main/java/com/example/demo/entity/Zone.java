@@ -1,16 +1,25 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import java.time.Instant;
 
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Zone {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String zoneName;
-    private Integer priorityLevel;
-    private Integer population;
-    private Boolean active = true;
+    private int priorityLevel;
+    private long population;
+    private Boolean active;
     private Instant createdAt;
     private Instant updatedAt;
 }
