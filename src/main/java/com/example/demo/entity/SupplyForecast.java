@@ -12,16 +12,18 @@ public class SupplyForecast {
     private Long id;
 
     private LocalDate forecastDate;
+
     private double quantity;
 
+    // ✅ MUST EXIST because repository uses it
     private LocalDateTime generatedAt;
 
-    // ✅ No-arg constructor (required by JPA)
+    // ✅ Required by JPA
     public SupplyForecast() {
         this.generatedAt = LocalDateTime.now();
     }
 
-    // ✅ Parameterized constructor (FIX)
+    // ✅ Required by Service
     public SupplyForecast(Long id, LocalDate forecastDate, double quantity) {
         this.id = id;
         this.forecastDate = forecastDate;

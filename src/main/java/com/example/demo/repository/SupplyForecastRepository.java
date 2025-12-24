@@ -5,5 +5,6 @@ import com.example.demo.entity.SupplyForecast;
 
 public interface SupplyForecastRepository extends JpaRepository<SupplyForecast, Long> {
 
+    // ✅ FIELD NAME MATCHES ENTITY
     SupplyForecast findFirstByOrderByGeneratedAtDesc();
 }
