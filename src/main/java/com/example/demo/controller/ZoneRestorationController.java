@@ -1,35 +1,42 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.ZoneRestorationRecord;
-import com.example.demo.service.ZoneRestorationServiceImpl;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.example.demo.service.ZoneRestorationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/restorations")
-@Tag(name = "Zone Restorations")
+@RequestMapping("/api/zones")
 public class ZoneRestorationController {
 
-    private final ZoneRestorationServiceImpl service;
+    @Autowired
+    private ZoneRestorationService service;
 
-    public ZoneRestorationController(ZoneRestorationServiceImpl service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public ZoneRestorationRecord restore(@RequestBody ZoneRestorationRecord record) {
-        return service.create(record);
+    @GetMapping
+    public List<ZoneRestorationRecord> getAllRecords() {
+        return service.getAllRecords();
     }
 
     @GetMapping("/{id}")
-    public ZoneRestorationRecord getById(@PathVariable Long id) {
-        return service.getById(id);
+    public ZoneRestorationRecord getRecordById(@PathVariable Long id) {
+        return service.getRecordById(id);
     }
 
-    @GetMapping("/zone/{zoneId}")
-    public List<ZoneRestorationRecord> getByZone(@PathVariable Long zoneId) {
-        return service.getByZone(zoneId);
+    @PostMapping
+    public ZoneRestorationRecord createRecord(@RequestParam Long zoneId,
+                                              @RequestParam(required = false) String status) {
+        return service.saveRecord(zoneId, status);
+    }
+
+    @PutMapping("/{id}")
+    public ZoneRestorationRecord updateStatus(@PathVariable Long id, @RequestParam String status) {
+        return service.updateStatus(id, status);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteRecord(@PathVariable Long id) {
+        service.deleteRecord(id);
     }
 }
