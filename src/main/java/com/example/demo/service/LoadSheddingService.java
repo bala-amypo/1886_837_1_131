@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface LoadSheddingService {
 
-    LoadSheddingEvent createEvent(LoadSheddingEvent event);
-
-    List<LoadSheddingEvent> getAllEvents();
+    LoadSheddingEvent createEvent();
 
     LoadSheddingEvent getEventById(Long id);
+
+    List<LoadSheddingEvent> getAllEvents();
 }
