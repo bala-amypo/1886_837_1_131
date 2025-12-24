@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface DemandReadingService {
 
-    DemandReading createReading(DemandReading reading);
+    DemandReading save(DemandReading reading);
 
-    List<DemandReading> getAllReadings();
+    DemandReading getLatestByZone(Long zoneId);
 
-    DemandReading getReadingById(Long id);
+    List<DemandReading> getAll();
 }
