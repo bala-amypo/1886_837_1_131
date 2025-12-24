@@ -1,7 +1,11 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.*;
-import com.example.demo.repository.*;
+import com.example.demo.entity.LoadSheddingEvent;
+import com.example.demo.entity.DemandReading;
+import com.example.demo.entity.SupplyForecast;
+import com.example.demo.repository.LoadSheddingRepository;
+import com.example.demo.repository.DemandReadingRepository;
+import com.example.demo.repository.SupplyForecastRepository;
 import com.example.demo.service.LoadSheddingService;
 import org.springframework.stereotype.Service;
 
@@ -11,44 +15,49 @@ import java.util.List;
 @Service
 public class LoadSheddingServiceImpl implements LoadSheddingService {
 
-    private final LoadSheddingRepository eventRepository;
-    private final ZoneRepository zoneRepository;
-    private final DemandReadingRepository demandRepository;
-    private final SupplyForecastRepository forecastRepository;
+    private final LoadSheddingRepository loadSheddingRepository;
+    private final DemandReadingRepository demandReadingRepository;
+    private final SupplyForecastRepository supplyForecastRepository;
 
     public LoadSheddingServiceImpl(
-            LoadSheddingRepository eventRepository,
-            ZoneRepository zoneRepository,
-            DemandReadingRepository demandRepository,
-            SupplyForecastRepository forecastRepository) {
-        this.eventRepository = eventRepository;
-        this.zoneRepository = zoneRepository;
-        this.demandRepository = demandRepository;
-        this.forecastRepository = forecastRepository;
+            LoadSheddingRepository loadSheddingRepository,
+            DemandReadingRepository demandReadingRepository,
+            SupplyForecastRepository supplyForecastRepository) {
+        this.loadSheddingRepository = loadSheddingRepository;
+        this.demandReadingRepository = demandReadingRepository;
+        this.supplyForecastRepository = supplyForecastRepository;
     }
 
     @Override
-    public LoadSheddingEvent generateEvent(Long zoneId) {
+    public LoadSheddingEvent createEvent() {
 
-        Zone z = zoneRepository.findById(zoneId).orElseThrow();
-        DemandReading reading = demandRepository.findAll().get(0);
-        SupplyForecast forecast = forecastRepository.findAll().get(0);
+        List<DemandReading> demands = demandReadingRepository.findAll();
+        List<SupplyForecast> forecasts = supplyForecastRepository.findAll();
 
-        Long shedMW = Math.max(
-                0,
-                reading.getDemandMW() - forecast.getAvailableSupplyMW()
-        );
+        double totalDemand = demands.stream()
+                .mapToDouble(DemandReading::getDemandMW)
+                .sum();
+
+        double totalSupply = forecasts.stream()
+                .mapToDouble(SupplyForecast::getAvailableSupplyMW)
+                .sum();
 
         LoadSheddingEvent event = new LoadSheddingEvent();
-        event.setZone(z);
-        event.setShedMW(shedMW);
+        event.setTotalDemand(totalDemand);
+        event.setTotalSupply(totalSupply);
         event.setEventStart(Instant.now());
+        event.setStatus(totalDemand > totalSupply ? "ACTIVE" : "NO_SHEDDING");
 
-        return eventRepository.save(event);
+        return loadSheddingRepository.save(event);
+    }
+
+    @Override
+    public LoadSheddingEvent getEventById(Long id) {
+        return loadSheddingRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<LoadSheddingEvent> getAllEvents() {
-        return eventRepository.findAll();
+        return loadSheddingRepository.findAll();
     }
 }

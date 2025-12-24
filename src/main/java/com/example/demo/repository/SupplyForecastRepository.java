@@ -1,11 +1,12 @@
 package com.example.demo.repository;
 
-import java.util.*;
-import com.example.demo.entity.*;
+import com.example.demo.entity.SupplyForecast;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface SupplyForecastRepository {
+import java.util.Optional;
+
+public interface SupplyForecastRepository
+        extends JpaRepository<SupplyForecast, Long> {
+
     Optional<SupplyForecast> findFirstByOrderByGeneratedAtDesc();
-    Optional<SupplyForecast> findById(Long id);
-    List<SupplyForecast> findAll();
-    SupplyForecast save(SupplyForecast s);
 }
