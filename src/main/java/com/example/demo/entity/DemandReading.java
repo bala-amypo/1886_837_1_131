@@ -1,13 +1,16 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class DemandReading {
 
     @Id
@@ -15,5 +18,9 @@ public class DemandReading {
     private Long id;
 
     private Long zoneId;
-    private Double value;
+
+    private Double demandValue;
+
+    // ✅ ADD THIS FIELD
+    private LocalDateTime recordedAt;
 }
