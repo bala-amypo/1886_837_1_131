@@ -9,7 +9,7 @@ public class ZoneController {
 
     private final ZoneService service;
 
-    public ZoneController(ZoneService service) {
-        this.service = service;
+    public ZoneController(ZoneService Service) {
+        this.zoneService = Service;
     }
 }
