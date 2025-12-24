@@ -3,7 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.DemandReading;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class DemandReadingServiceImpl {
@@ -17,14 +17,19 @@ public class DemandReadingServiceImpl {
         return new DemandReading(id, 1L, 120.0);
     }
 
+    // 🔥 ADD THIS METHOD
+    public List<DemandReading> getByZone(Long zoneId) {
+        return List.of(
+                new DemandReading(1L, zoneId, 130.0),
+                new DemandReading(2L, zoneId, 140.0)
+        );
+    }
+
     public DemandReading getLatest(Long zoneId) {
-        DemandReading r = new DemandReading();
-        r.setZoneId(zoneId);
-        r.setValue(150.0);
-        return r;
+        return new DemandReading(3L, zoneId, 150.0);
     }
 
     public List<DemandReading> getRecent(Long zoneId, int limit) {
-        return List.of(new DemandReading(1L, zoneId, 140.0));
+        return List.of(new DemandReading(4L, zoneId, 145.0));
     }
 }

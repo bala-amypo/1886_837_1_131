@@ -3,13 +3,20 @@ package com.example.demo.service;
 import com.example.demo.entity.LoadShedding;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 @Service
 public class LoadSheddingServiceImpl {
 
+    // 🔥 ADD THIS METHOD
+    public LoadShedding create(LoadShedding shedding) {
+        shedding.setId(1L);
+        shedding.setActive(true);
+        return shedding;
+    }
+
     public LoadShedding trigger(Long zoneId) {
-        return new LoadShedding(1L, zoneId, true);
+        return new LoadShedding(2L, zoneId, true);
     }
 
     public LoadShedding getById(Long id) {
@@ -17,7 +24,7 @@ public class LoadSheddingServiceImpl {
     }
 
     public List<LoadShedding> getByZone(Long zoneId) {
-        return List.of(new LoadShedding(1L, zoneId, true));
+        return List.of(new LoadShedding(3L, zoneId, true));
     }
 
     public List<LoadShedding> getAll() {
