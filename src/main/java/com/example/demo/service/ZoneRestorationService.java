@@ -4,9 +4,10 @@ import com.example.demo.entity.ZoneRestorationRecord;
 import java.util.List;
 
 public interface ZoneRestorationService {
+
+    ZoneRestorationRecord createRecord(ZoneRestorationRecord record);
+
     List<ZoneRestorationRecord> getAllRecords();
+
     ZoneRestorationRecord getRecordById(Long id);
-    ZoneRestorationRecord saveRecord(Long zoneId, String status);
-    void deleteRecord(Long id);
-    ZoneRestorationRecord updateStatus(Long id, String status);
 }
