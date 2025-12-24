@@ -1,43 +1,30 @@
-package com.example.demo.service;
-
-import com.example.demo.entity.Zone;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.ZoneRepository;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class ZoneServiceImpl {
 
-    private final ZoneRepository repository;
+    private final ZoneRepository repo;
 
-    public ZoneServiceImpl(ZoneRepository repository) {
-        this.repository = repository;
+    public ZoneServiceImpl(ZoneRepository repo) {
+        this.repo = repo;
     }
 
-    public Zone createZone(Zone zone) {
-        return repository.save(zone);
+    public Zone createZone(Zone z) {
+        if (repo.findByZoneName(z.getZoneName()).isPresent())
+            throw new BadRequestException("unique");
+        return repo.save(z);
     }
 
-    public Zone updateZone(Long id, Zone zone) {
-        Zone existing = getZoneById(id);
-        existing.setZoneName(zone.getZoneName());
-        return repository.save(existing);
+    public Zone get(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("not found"));
     }
 
-    public Zone getZoneById(Long id) {
-        return repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+    public List<Zone> getAll() {
+        return repo.findAll();
     }
 
-    public List<Zone> getAllZones() {
-        return repository.findAll();
-    }
-
-    public Zone deactivateZone(Long id) {
-        Zone zone = getZoneById(id);
-        zone.setActive(false);
-        return repository.save(zone);
+    public Zone deactivate(Long id) {
+        Zone z = get(id);
+        z.setActive(false);
+        return repo.save(z);
     }
 }
