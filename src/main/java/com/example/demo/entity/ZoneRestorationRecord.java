@@ -1,22 +1,9 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;   // ✅ REQUIRED IMPORT
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ZoneRestorationRecord {
 
     @Id
@@ -24,8 +11,25 @@ public class ZoneRestorationRecord {
     private Long id;
 
     private Long zoneId;
-
-    private LocalDateTime restoredAt;   // ✅ NOW COMPILER KNOWS THIS
-
+    private LocalDateTime time;
     private String status;
+
+    public ZoneRestorationRecord() { }
+
+    public ZoneRestorationRecord(Long id, Long zoneId, LocalDateTime time, String status) {
+        this.id = id;
+        this.zoneId = zoneId;
+        this.time = time;
+        this.status = status;
+    }
+
+    // ✅ Add this constructor for 2 parameters
+    public ZoneRestorationRecord(Long id, Long zoneId) {
+        this.id = id;
+        this.zoneId = zoneId;
+        this.time = LocalDateTime.now(); // default current time
+        this.status = "PENDING";         // default status
+    }
+
+    // getters and setters ...
 }
