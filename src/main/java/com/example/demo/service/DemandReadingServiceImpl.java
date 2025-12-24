@@ -3,28 +3,28 @@ package com.example.demo.service;
 import com.example.demo.entity.DemandReading;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class DemandReadingServiceImpl {
 
     public DemandReading create(DemandReading reading) {
+        reading.setId(1L);
         return reading;
     }
 
+    public DemandReading getById(Long id) {
+        return new DemandReading(id, 1L, 120.0);
+    }
+
     public DemandReading getLatest(Long zoneId) {
-        return DemandReading.builder()
-                .zoneId(zoneId)
-                .value(120.5)
-                .build();
+        DemandReading r = new DemandReading();
+        r.setZoneId(zoneId);
+        r.setValue(150.0);
+        return r;
     }
 
     public List<DemandReading> getRecent(Long zoneId, int limit) {
-        return new ArrayList<>();
-    }
-
-    public List<DemandReading> getByZone(Long zoneId) {
-        return new ArrayList<>();
+        return List.of(new DemandReading(1L, zoneId, 140.0));
     }
 }

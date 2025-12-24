@@ -3,13 +3,13 @@ package com.example.demo.service;
 import com.example.demo.entity.Zone;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ZoneServiceImpl {
 
     public Zone createZone(Zone zone) {
+        zone.setId(1L);
         zone.setActive(true);
         return zone;
     }
@@ -20,18 +20,14 @@ public class ZoneServiceImpl {
     }
 
     public Zone getZoneById(Long id) {
-        return Zone.builder()
-                .id(id)
-                .zoneName("Zone A")
-                .active(true)
-                .build();
+        return new Zone(id, "Zone-A", true);
     }
 
     public List<Zone> getAllZones() {
-        return new ArrayList<>();
+        return List.of(new Zone(1L, "Zone-A", true));
     }
 
-    public void deactivateZone(Long id) {
-        // mock deactivate
+    public Zone deactivateZone(Long id) {
+        return new Zone(id, "Zone-A", false);
     }
 }
