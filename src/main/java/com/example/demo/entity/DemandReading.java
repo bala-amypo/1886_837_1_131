@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.Instant;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -14,7 +16,10 @@ public class DemandReading {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double demandMW;     // ✔ FIELD NAME MUST MATCH
+    // IMPORTANT: This MUST exist for the repository query
+    private Long zoneId;     
 
-    // Lombok @Data generates getDemandMW() automatically
+    private double demandMW;
+
+    private Instant recordedAt;
 }
