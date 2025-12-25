@@ -32,8 +32,8 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
         if (zone == null) return null;
 
         LoadSheddingEvent event = new LoadSheddingEvent();
-        event.setZone(zone);                  // ✅ CORRECT
-        event.setEventStatus("SHEDDING");     // ✅ CORRECT
+        event.setZone(zone);                 
+        event.setEventStatus("SHEDDING");    
 
         return repo.save(event);
     }
