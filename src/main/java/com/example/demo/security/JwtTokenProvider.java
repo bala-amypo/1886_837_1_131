@@ -2,43 +2,24 @@ package com.example.demo.security;
 
 import com.example.demo.entity.AppUser;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
-import java.util.Date;
+import java.util.Base64;
 
 public class JwtTokenProvider {
 
-    private static final String SECRET_KEY = "mysecretkeymysecretkeymysecretkey12";
-    private static final long VALIDITY = 3600000; // 1 hour
-
-    private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-
     public String createToken(AppUser user) {
 
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("role", user.getRoles().iterator().next());
-        claims.put("userId", user.getId());
+        String payload =
+                user.getEmail() + "|" +
+                user.getRoles().iterator().next() + "|" +
+                user.getId();
 
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + VALIDITY);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        return Base64.getEncoder().encodeToString(payload.getBytes());
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
+            Base64.getDecoder().decode(token);
             return true;
         } catch (Exception e) {
             return false;
@@ -46,10 +27,15 @@ public class JwtTokenProvider {
     }
 
     public Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+
+        String decoded = new String(Base64.getDecoder().decode(token));
+        String[] parts = decoded.split("\\|");
+
+        Claims claims = new Claims();
+        claims.setSubject(parts[0]);
+        claims.put("role", parts[1]);
+        claims.put("userId", Long.parseLong(parts[2]));
+
+        return claims;
     }
 }
