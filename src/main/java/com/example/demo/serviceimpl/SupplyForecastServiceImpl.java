@@ -1,15 +1,12 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.SupplyForecast;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.*;
 import com.example.demo.repository.SupplyForecastRepository;
 import com.example.demo.service.SupplyForecastService;
-import org.springframework.stereotype.Service;
-import java.time.Instant;
+
 import java.util.List;
 
-@Service
 public class SupplyForecastServiceImpl implements SupplyForecastService {
 
     private final SupplyForecastRepository repo;
@@ -19,25 +16,25 @@ public class SupplyForecastServiceImpl implements SupplyForecastService {
     }
 
     @Override
-    public SupplyForecast createForecast(SupplyForecast s) {
-        if (s.getAvailableSupplyMW() < 0)
-            throw new BadRequestException("Supply must be >= 0");
+    public SupplyForecast createForecast(SupplyForecast f) {
+        if (f.getAvailableSupplyMW() < 0)
+            throw new BadRequestException(">= 0");
 
-        if (s.getForecastEnd().isBefore(s.getForecastStart()))
-            throw new BadRequestException("Invalid supply forecast range");
+        if (f.getForecastStart().isAfter(f.getForecastEnd()))
+            throw new BadRequestException("range");
 
-        s.setGeneratedAt(Instant.now());
-        return repo.save(s);
+        return repo.save(f);
     }
 
     @Override
-    public SupplyForecast updateForecast(Long id, SupplyForecast updated) {
+    public SupplyForecast updateForecast(Long id, SupplyForecast f) {
         SupplyForecast existing = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Forecast not found"));
 
-        existing.setAvailableSupplyMW(updated.getAvailableSupplyMW());
-        existing.setForecastStart(updated.getForecastStart());
-        existing.setForecastEnd(updated.getForecastEnd());
+        existing.setAvailableSupplyMW(f.getAvailableSupplyMW());
+        existing.setForecastStart(f.getForecastStart());
+        existing.setForecastEnd(f.getForecastEnd());
+
         return repo.save(existing);
     }
 
