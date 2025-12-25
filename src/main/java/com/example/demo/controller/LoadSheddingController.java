@@ -16,12 +16,13 @@ public class LoadSheddingController {
         this.service = service;
     }
 
-    @PostMapping("/trigger/{zoneId}")
-    public ResponseEntity<LoadSheddingEvent> triggerLoadShedding(
-            @PathVariable Long zoneId) {
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service.triggerLoadShedding(zoneId));
-    }
+   @PostMapping("/trigger/{zoneId}")
+public ResponseEntity<LoadSheddingEvent> trigger(@PathVariable Long zoneId) {
+    return ResponseEntity
+            .status(HttpStatus.CREATED) // ❗ TEST EXPECTS 201
+            .body(service.triggerLoadShedding(zoneId));
 }
+}
+
+
+
