@@ -1,9 +1,15 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.Instant;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ZoneRestorationRecord {
 
     @Id
@@ -13,19 +19,9 @@ public class ZoneRestorationRecord {
     @ManyToOne
     private Zone zone;
 
-    @ManyToOne
-    private LoadSheddingEvent event;
-
     private Instant restoredAt;
 
-    public Long getId() { return id; }
+    private Long eventId;
 
-    public Zone getZone() { return zone; }
-    public void setZone(Zone zone) { this.zone = zone; }
-
-    public LoadSheddingEvent getEvent() { return event; }
-    public void setEvent(LoadSheddingEvent event) { this.event = event; }
-
-    public Instant getRestoredAt() { return restoredAt; }
-    public void setRestoredAt(Instant restoredAt) { this.restoredAt = restoredAt; }
+    private String notes;
 }

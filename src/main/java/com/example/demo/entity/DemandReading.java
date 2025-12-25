@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.Instant;
 
 @Entity
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -16,10 +16,10 @@ public class DemandReading {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // IMPORTANT: This MUST exist for the repository query
-    private Long zoneId;     
+    @ManyToOne
+    private Zone zone;
 
-    private double demandMW;
+    private Double demandMW;
 
     private Instant recordedAt;
 }
