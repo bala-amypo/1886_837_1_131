@@ -4,8 +4,12 @@ import com.example.demo.entity.SupplyForecast;
 import java.util.List;
 
 public interface SupplyForecastService {
-    SupplyForecast createForecast(SupplyForecast s);
-    SupplyForecast updateForecast(Long id, SupplyForecast s);
+
+    SupplyForecast createForecast(SupplyForecast forecast);
+
+    SupplyForecast updateForecast(Long id, SupplyForecast forecast);
+
     SupplyForecast getLatestForecast();
+
     List<SupplyForecast> getAllForecasts();
 }
