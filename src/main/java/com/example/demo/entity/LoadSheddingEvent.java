@@ -1,15 +1,9 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.Instant;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class LoadSheddingEvent {
 
     @Id
@@ -19,12 +13,34 @@ public class LoadSheddingEvent {
     @ManyToOne
     private Zone zone;
 
-    private Instant eventStart;
-    private Instant eventEnd;
+    private Instant startTime;
+    private Instant endTime;
 
-    private String reason;
+    public Long getId() {
+        return id;
+    }
 
-    private Long triggeredByForecastId;
+    public Zone getZone() {
+        return zone;
+    }
 
-    private Double expectedDemandReductionMW;
+    public void setZone(Zone zone) {
+        this.zone = zone;
+    }
+
+    public Instant getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Instant startTime) {
+        this.startTime = startTime;
+    }
+
+    public Instant getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Instant endTime) {
+        this.endTime = endTime;
+    }
 }

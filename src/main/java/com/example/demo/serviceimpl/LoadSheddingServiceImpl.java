@@ -7,6 +7,8 @@ import com.example.demo.repository.ZoneRepository;
 import com.example.demo.service.LoadSheddingService;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 public class LoadSheddingServiceImpl implements LoadSheddingService {
 
@@ -22,7 +24,9 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
 
     @Override
     public LoadSheddingEvent createEvent() {
-        return repo.save(new LoadSheddingEvent());
+        LoadSheddingEvent event = new LoadSheddingEvent();
+        event.setStartTime(Instant.now());
+        return repo.save(event);
     }
 
     @Override
@@ -32,8 +36,8 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
         if (zone == null) return null;
 
         LoadSheddingEvent event = new LoadSheddingEvent();
-        event.setZone(zone);                 
-        event.setEventStatus("SHEDDING");    
+        event.setZone(zone);
+        event.setStartTime(Instant.now());
 
         return repo.save(event);
     }
