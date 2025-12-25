@@ -1,46 +1,30 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class LoadSheddingEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Zone zone;
+    private Long zoneId;
 
-    private Instant startTime;
-    private Instant endTime;
+    private Instant eventStart;   // 🔥 REQUIRED FIELD
 
-    public Long getId() {
-        return id;
-    }
+    private Instant eventEnd;
 
-    public Zone getZone() {
-        return zone;
-    }
+    private Double totalDemand;
 
-    public void setZone(Zone zone) {
-        this.zone = zone;
-    }
+    private Double totalSupply;
 
-    public Instant getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
-    }
-
-    public Instant getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Instant endTime) {
-        this.endTime = endTime;
-    }
+    private String status;
 }
