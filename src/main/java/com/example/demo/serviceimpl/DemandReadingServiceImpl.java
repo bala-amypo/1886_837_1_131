@@ -1,19 +1,14 @@
-package com.example.demo.serviceimpl;
-
-import com.example.demo.entity.DemandReading;
-import com.example.demo.repository.DemandReadingRepository;
-import com.example.demo.service.DemandReadingService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
 @Service
 public class DemandReadingServiceImpl implements DemandReadingService {
 
     private final DemandReadingRepository repo;
+    private final ZoneRepository zoneRepo;
 
-    public DemandReadingServiceImpl(DemandReadingRepository repo) {
+    public DemandReadingServiceImpl(
+            DemandReadingRepository repo,
+            ZoneRepository zoneRepo) {
         this.repo = repo;
+        this.zoneRepo = zoneRepo;
     }
 
     @Override
@@ -28,7 +23,9 @@ public class DemandReadingServiceImpl implements DemandReadingService {
 
     @Override
     public DemandReading getLatestByZone(Long zoneId) {
-        return repo.findFirstByZone_IdOrderByRecordedAtDesc(zoneId)
-                .orElse(null);
+        Zone zone = zoneRepo.findById(zoneId).orElse(null);
+        if (zone == null) return null;
+
+        return repo.findFirstByZoneOrderByRecordedAtDesc(zone).orElse(null);
     }
 }
