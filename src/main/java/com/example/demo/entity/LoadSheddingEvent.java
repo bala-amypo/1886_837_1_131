@@ -18,9 +18,7 @@ public class LoadSheddingEvent {
 
     private Long zoneId;
 
-    // ⚠ TEST EXPECTS THIS NAME EXACTLY
     private Instant eventStart;
 
-    // ⚠ TEST EXPECTS DEFAULT VALUE
     private String status;
 }
