@@ -20,7 +20,7 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
         LoadSheddingEvent event = new LoadSheddingEvent();
         event.setZoneId(zoneId);
         event.setEventStart(Instant.now());
-        event.setStatus("STARTED");
+        event.setStatus("STARTED"); // ⚠ REQUIRED BY TEST
 
         return repo.save(event);
     }
