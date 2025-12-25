@@ -1,3 +1,14 @@
+package com.example.demo.serviceimpl;
+
+import com.example.demo.entity.DemandReading;
+import com.example.demo.entity.Zone;
+import com.example.demo.repository.DemandReadingRepository;
+import com.example.demo.repository.ZoneRepository;
+import com.example.demo.service.DemandReadingService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class DemandReadingServiceImpl implements DemandReadingService {
 
@@ -23,6 +34,7 @@ public class DemandReadingServiceImpl implements DemandReadingService {
 
     @Override
     public DemandReading getLatestByZone(Long zoneId) {
+
         Zone zone = zoneRepo.findById(zoneId).orElse(null);
         if (zone == null) return null;
 
