@@ -2,8 +2,11 @@ package com.example.demo.entity;
 
 import lombok.*;
 
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AppUser {
     private Long id;
     private String email;

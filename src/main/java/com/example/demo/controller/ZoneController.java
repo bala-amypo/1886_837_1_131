@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/zones")
+@RequestMapping("/api/zones")
 public class ZoneController {
 
-    private final ZoneService zoneService;   // ✔ FIELD ADDED
+    private final ZoneService zoneService;
 
     public ZoneController(ZoneService zoneService) {
-        this.zoneService = zoneService;     // ✔ ASSIGNMENT FIXED
+        this.zoneService = zoneService;
     }
 
     @PostMapping
@@ -24,20 +24,5 @@ public class ZoneController {
     @GetMapping
     public List<Zone> getAll() {
         return zoneService.getAllZones();
-    }
-
-    @GetMapping("/{id}")
-    public Zone getOne(@PathVariable Long id) {
-        return zoneService.getZoneById(id);
-    }
-
-    @PutMapping("/{id}")
-    public Zone update(@PathVariable Long id, @RequestBody Zone z) {
-        return zoneService.updateZone(id, z);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        zoneService.deleteZone(id);
     }
 }
