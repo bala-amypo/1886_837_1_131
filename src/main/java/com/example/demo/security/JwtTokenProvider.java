@@ -1,55 +1,61 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.AppUser;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 
-import java.security.Key;
-import java.util.Date;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JwtTokenProvider {
 
-    private static final String SECRET_KEY = "mysecretkeymysecretkeymysecretkey12";
-    private static final long VALIDITY = 3600000; // 1 hour
+    private static final String SEPARATOR = ":";
 
-    private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-
+    // -------- CREATE TOKEN --------
     public String createToken(AppUser user) {
 
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("role", user.getRoles().iterator().next());
-        claims.put("userId", user.getId());
+        String payload =
+                user.getEmail() + SEPARATOR +
+                user.getRole() + SEPARATOR +
+                user.getId();
 
-        Date now = new Date();
-        Date expiry = new Date(now.getTime() + VALIDITY);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expiry)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        return Base64.getEncoder().encodeToString(payload.getBytes());
     }
 
+    // -------- VALIDATE TOKEN --------
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
+            Base64.getDecoder().decode(token);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
+    // -------- GET CLAIMS --------
     public Claims getClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+
+        String decoded = new String(Base64.getDecoder().decode(token));
+        String[] parts = decoded.split(SEPARATOR);
+
+        Claims claims = new Claims();
+        claims.setSubject(parts[0]);           // email
+        claims.put("role", parts[1]);           // role
+        claims.put("userId", Long.parseLong(parts[2]));
+
+        return claims;
+    }
+
+    // -------- SIMPLE CLAIMS CLASS --------
+    public static class Claims extends HashMap<String, Object> {
+
+        private String subject;
+
+        public String getSubject() {
+            return subject;
+        }
+
+        public void setSubject(String subject) {
+            this.subject = subject;
+        }
     }
 }
