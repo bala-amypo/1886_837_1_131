@@ -5,13 +5,9 @@ import java.util.List;
 
 public interface ZoneRestorationService {
 
+    ZoneRestorationRecord restoreZone(ZoneRestorationRecord record);
+
     List<ZoneRestorationRecord> getAllRecords();
-
-    ZoneRestorationRecord getRecordById(Long id);
-
-    ZoneRestorationRecord saveRecord(Long zoneId, String time);
-
-    ZoneRestorationRecord updateStatus(Long id, String time);
 
     void deleteRecord(Long id);
 }
