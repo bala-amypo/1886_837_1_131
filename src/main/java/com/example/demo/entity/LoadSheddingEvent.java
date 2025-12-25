@@ -18,7 +18,7 @@ public class LoadSheddingEvent {
 
     private Long zoneId;
 
-    private Instant eventStart;   // 🔥 REQUIRED FIELD
+    private Instant eventStart;
 
     private Instant eventEnd;
 
