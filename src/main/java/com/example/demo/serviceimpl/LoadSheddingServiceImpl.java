@@ -15,11 +15,11 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
     private final LoadSheddingEventRepository repo;
 
     @Override
-    public LoadSheddingEvent createEvent(Long zoneId) {
+    public LoadSheddingEvent triggerLoadShedding(Long zoneId) {
 
         LoadSheddingEvent event = new LoadSheddingEvent();
-        event.setZoneId(zoneId);                 // ✅ correct
-        event.setEventStart(Instant.now());      // ✅ correct
+        event.setZoneId(zoneId);
+        event.setEventStart(Instant.now());
         event.setStatus("STARTED");
 
         return repo.save(event);
