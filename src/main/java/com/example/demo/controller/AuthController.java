@@ -31,12 +31,11 @@ public class AuthController {
         if (repo.findByEmail(req.getEmail()).isPresent())
             throw new BadRequestException("unique");
 
-        AppUser user = AppUser.builder()
-                .email(req.getEmail())
-                .password(encoder.encode(req.getPassword()))
-                .role("ROLE_USER")
-                .active(true)
-                .build();
+            AppUser user = new AppUser();
+        user.setEmail(req.getEmail());
+        user.setPassword(encodedPassword);
+        user.setRole("USER");
+
 
         return repo.save(user);
     }
