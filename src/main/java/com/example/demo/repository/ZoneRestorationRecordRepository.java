@@ -1,11 +1,12 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.*;
+import com.example.demo.entity.ZoneRestorationRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.*;
 
+import java.util.List;
 
-public interface ZoneRestorationRecordRepository extends JpaRepository<ZoneRestorationRecord, Long> {
-    List<ZoneRestorationRecord> findByZoneIdOrderByRestoredAtDesc(Long zoneId);
+public interface ZoneRestorationRecordRepository
+        extends JpaRepository<ZoneRestorationRecord, Long> {
+
+    List<ZoneRestorationRecord> findByZoneId(Long zoneId);
 }
-
