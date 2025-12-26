@@ -16,18 +16,36 @@ public class ZoneRestorationController {
         this.service = service;
     }
 
+    /**
+     * Create a restoration record
+     */
     @PostMapping
-    public ZoneRestorationRecord restore(@RequestBody ZoneRestorationRecord r) {
-        return service.restoreZone(r);
+    public ZoneRestorationRecord create(
+            @RequestBody ZoneRestorationRecord record) {
+        return service.createRecord(record);
     }
 
+    /**
+     * Get restoration record by ID
+     */
     @GetMapping("/{id}")
-    public ZoneRestorationRecord get(@PathVariable Long id) {
+    public ZoneRestorationRecord getById(@PathVariable Long id) {
         return service.getRecordById(id);
     }
 
+    /**
+     * Get all restoration records for a zone
+     */
     @GetMapping("/zone/{zoneId}")
-    public List<ZoneRestorationRecord> byZone(@PathVariable Long zoneId) {
+    public List<ZoneRestorationRecord> getByZone(@PathVariable Long zoneId) {
         return service.getRecordsForZone(zoneId);
+    }
+
+    /**
+     * Delete a restoration record
+     */
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.deleteRecord(id);
     }
 }
