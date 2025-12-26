@@ -13,8 +13,12 @@ public class LoadSheddingController {
         this.service = service;
     }
 
+    /**
+     * Trigger load shedding for a given forecast ID
+     * NOTE: Service method returns void (as per interface & tests)
+     */
     @PostMapping("/trigger/{forecastId}")
-    public void trigger(@PathVariable Long forecastId) {
+    public void triggerLoadShedding(@PathVariable Long forecastId) {
         service.triggerLoadShedding(forecastId);
     }
 }
