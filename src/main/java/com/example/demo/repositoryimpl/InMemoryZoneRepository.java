@@ -28,7 +28,20 @@ public class InMemoryZoneRepository implements ZoneRepository {
         return Optional.ofNullable(store.get(id));
     }
 
-    // ✅ REQUIRED BY INTERFACE
+    // ✅ REQUIRED
+    @Override
+    public List<Zone> findAll() {
+        return new ArrayList<>(store.values());
+    }
+
+    // ✅ REQUIRED
+    @Override
+    public Optional<Zone> findByZoneName(String zoneName) {
+        return store.values().stream()
+                .filter(z -> z.getZoneName().equalsIgnoreCase(zoneName))
+                .findFirst();
+    }
+
     @Override
     public List<Zone> findByActiveTrueOrderByPriorityLevelAsc() {
         return store.values().stream()

@@ -8,6 +8,7 @@ import com.example.demo.service.ZoneRestorationService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 @Service
 public class ZoneRestorationServiceImpl implements ZoneRestorationService {
@@ -36,9 +37,15 @@ public class ZoneRestorationServiceImpl implements ZoneRestorationService {
         return restorationRepo.save(record);
     }
 
-    // ✅ REQUIRED BY INTERFACE
+    // ✅ REQUIRED
+    @Override
+    public List<ZoneRestorationRecord> getRecordsForZone(Long zoneId) {
+        return restorationRepo.findByZoneId(zoneId);
+    }
+
+    // ✅ FIXED (repository has delete, not deleteById)
     @Override
     public void deleteRecord(Long id) {
-        restorationRepo.deleteById(id);
+        restorationRepo.delete(id);
     }
 }

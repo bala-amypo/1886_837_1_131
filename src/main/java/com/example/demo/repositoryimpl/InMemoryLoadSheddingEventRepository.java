@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryLoadSheddingEventRepository implements LoadSheddingEventRepository {
@@ -27,9 +28,16 @@ public class InMemoryLoadSheddingEventRepository implements LoadSheddingEventRep
         return Optional.ofNullable(store.get(id));
     }
 
-    // ✅ REQUIRED
     @Override
     public List<LoadSheddingEvent> findAll() {
         return new ArrayList<>(store.values());
+    }
+
+    // ✅ REQUIRED BY INTERFACE
+    @Override
+    public List<LoadSheddingEvent> findByZoneId(Long zoneId) {
+        return store.values().stream()
+                .filter(e -> Objects.equals(e.getZoneId(), zoneId))
+                .collect(Collectors.toList());
     }
 }
