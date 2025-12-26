@@ -26,11 +26,6 @@ public class SupplyForecastController {
         return service.updateForecast(id, f);
     }
 
-    @GetMapping("/{id}")
-    public SupplyForecast get(@PathVariable Long id) {
-        return service.getForecastById(id);
-    }
-
     @GetMapping("/latest")
     public SupplyForecast latest() {
         return service.getLatestForecast();
