@@ -1,11 +1,15 @@
 package com.example.demo.repository;
 
-import java.util.*;
-import com.example.demo.entity.*;
+import com.example.demo.entity.LoadSheddingEvent;
+import java.util.List;
+import java.util.Optional;
 
 public interface LoadSheddingEventRepository {
-    LoadSheddingEvent save(LoadSheddingEvent e);
+
+    LoadSheddingEvent save(LoadSheddingEvent event);
+
     Optional<LoadSheddingEvent> findById(Long id);
-    List<LoadSheddingEvent> findByZoneIdOrderByEventStartDesc(Long id);
+
+    // 🔑 REQUIRED
     List<LoadSheddingEvent> findAll();
 }
