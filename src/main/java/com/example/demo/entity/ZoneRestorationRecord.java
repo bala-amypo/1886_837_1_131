@@ -3,11 +3,13 @@ package com.example.demo.entity;
 import lombok.*;
 import java.time.Instant;
 
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ZoneRestorationRecord {
+
     private Long id;
     private Zone zone;
     private Instant restoredAt;
