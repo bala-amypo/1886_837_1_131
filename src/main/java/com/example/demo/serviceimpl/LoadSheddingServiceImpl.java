@@ -6,6 +6,7 @@ import com.example.demo.service.LoadSheddingService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LoadSheddingServiceImpl implements LoadSheddingService {
@@ -17,7 +18,17 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
     }
 
     @Override
+    public void triggerLoadShedding(Long zoneId) {
+        LoadSheddingEvent event = new LoadSheddingEvent();
+        event.setZoneId(zoneId);
+        repo.save(event);
+    }
+
+    @Override
     public List<LoadSheddingEvent> getEventsForZone(Long zoneId) {
-        return repo.findByZoneId(zoneId);
+        return repo.findAll()
+                .stream()
+                .filter(e -> e.getZoneId().equals(zoneId))
+                .collect(Collectors.toList());
     }
 }
