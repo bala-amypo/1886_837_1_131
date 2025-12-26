@@ -1,13 +1,13 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.Zone;
+import com.example.demo.exception.*;
 import com.example.demo.repository.ZoneRepository;
 import com.example.demo.service.ZoneService;
-import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
-@Service
 public class ZoneServiceImpl implements ZoneService {
 
     private final ZoneRepository repo;
@@ -16,29 +16,42 @@ public class ZoneServiceImpl implements ZoneService {
         this.repo = repo;
     }
 
-    @Override
-    public Zone createZone(Zone zone) {
-        return repo.save(zone);
+    public Zone createZone(Zone z) {
+        if (z.getPriorityLevel() < 1)
+            throw new BadRequestException(">= 1");
+
+        if (repo.findByZoneName(z.getZoneName()).isPresent())
+            throw new BadRequestException("unique");
+
+        z.setActive(true);
+        z.setCreatedAt(Instant.now());
+        return repo.save(z);
     }
 
-    @Override
+    public Zone updateZone(Long id, Zone z) {
+        Zone ex = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+
+        ex.setZoneName(z.getZoneName());
+        ex.setPriorityLevel(z.getPriorityLevel());
+        ex.setPopulation(z.getPopulation());
+        ex.setUpdatedAt(Instant.now());
+        return repo.save(ex);
+    }
+
+    public Zone getZoneById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+    }
+
     public List<Zone> getAllZones() {
         return repo.findAll();
     }
 
-    @Override
-    public Zone getZoneById(Long id) {
-        return repo.findById(id).orElse(null);
-    }
-
-    @Override
-    public Zone updateZone(Long id, Zone zone) {
-        zone.setId(id);
-        return repo.save(zone);
-    }
-
-    @Override
-    public void deleteZone(Long id) {
-        repo.deleteById(id);
+    public void deactivateZone(Long id) {
+        Zone z = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+        z.setActive(false);
+        repo.save(z);
     }
 }
