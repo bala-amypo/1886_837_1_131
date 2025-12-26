@@ -16,25 +16,37 @@ public class DemandReadingController {
         this.service = service;
     }
 
+    /**
+     * Create a new demand reading
+     */
     @PostMapping
-    public DemandReading create(@RequestBody DemandReading r) {
-        return service.createReading(r);
+    public DemandReading create(@RequestBody DemandReading reading) {
+        return service.save(reading); // ✅ FIXED
     }
 
+    /**
+     * Get all readings for a zone
+     */
     @GetMapping("/zone/{zoneId}")
-    public List<DemandReading> byZone(@PathVariable Long zoneId) {
+    public List<DemandReading> getByZone(@PathVariable Long zoneId) {
         return service.getReadingsForZone(zoneId);
     }
 
+    /**
+     * Get latest reading for a zone
+     */
     @GetMapping("/zone/{zoneId}/latest")
-    public DemandReading latest(@PathVariable Long zoneId) {
+    public DemandReading getLatest(@PathVariable Long zoneId) {
         return service.getLatestReading(zoneId);
     }
 
-    @GetMapping("/zone/{zoneId}/recent")
-    public List<DemandReading> recent(
+    /**
+     * Get recent N readings for a zone
+     */
+    @GetMapping("/zone/{zoneId}/recent/{limit}")
+    public List<DemandReading> getRecent(
             @PathVariable Long zoneId,
-            @RequestParam int limit) {
+            @PathVariable int limit) {
         return service.getRecentReadings(zoneId, limit);
     }
 }
