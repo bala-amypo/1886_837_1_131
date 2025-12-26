@@ -5,9 +5,11 @@ import java.util.List;
 
 public interface SupplyForecastService {
 
-    SupplyForecast save(SupplyForecast forecast);
+    SupplyForecast createForecast(SupplyForecast forecast);
+
+    SupplyForecast updateForecast(Long id, SupplyForecast forecast);
+
+    SupplyForecast getLatestForecast();
 
     List<SupplyForecast> getAllForecasts();
-
-    SupplyForecast getForecastById(Long id);
 }

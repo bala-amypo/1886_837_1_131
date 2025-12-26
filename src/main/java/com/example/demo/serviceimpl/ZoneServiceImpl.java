@@ -17,7 +17,7 @@ public class ZoneServiceImpl implements ZoneService {
     }
 
     public Zone createZone(Zone z) {
-        if (z.getPriorityLevel() == null || z.getPriorityLevel() < 1)
+        if (z.getPriorityLevel()  <= 0 || z.getPriorityLevel() < 1)
             throw new BadRequestException(">= 1");
 
         if (repo.findByZoneName(z.getZoneName()).isPresent())
