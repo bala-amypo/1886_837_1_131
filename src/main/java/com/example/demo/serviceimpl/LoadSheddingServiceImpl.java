@@ -28,6 +28,7 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
         this.eventRepo = eventRepo;
     }
 
+    // ✅ 1. EXISTS IN INTERFACE
     @Override
     public LoadSheddingEvent triggerLoadShedding(Long forecastId) {
         SupplyForecast forecast = forecastRepo.findById(forecastId)
@@ -43,7 +44,9 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
                     readingRepo.findFirstByZoneIdOrderByRecordedAtDesc(zone.getId())
                             .orElse(null);
 
-            if (reading != null && reading.getDemandMW() > forecast.getAvailableSupplyMW()) {
+            if (reading != null &&
+                reading.getDemandMW() > forecast.getAvailableSupplyMW()) {
+
                 LoadSheddingEvent event = LoadSheddingEvent.builder()
                         .zone(zone)
                         .eventStart(Instant.now())
@@ -58,17 +61,20 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
         throw new BadRequestException("No overload");
     }
 
+    // ✅ 2. EXISTS IN INTERFACE
     @Override
     public LoadSheddingEvent getEventById(Long id) {
         return eventRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
     }
 
+    // ✅ 3. EXISTS IN INTERFACE
     @Override
     public List<LoadSheddingEvent> getEventsForZone(Long zoneId) {
         return eventRepo.findByZoneIdOrderByEventStartDesc(zoneId);
     }
 
+    // ✅ 4. EXISTS IN INTERFACE
     @Override
     public List<LoadSheddingEvent> getAllEvents() {
         return eventRepo.findAll();
