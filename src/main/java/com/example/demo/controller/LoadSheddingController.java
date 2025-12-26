@@ -2,12 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.LoadSheddingEvent;
 import com.example.demo.service.LoadSheddingService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/loadshedding")
+@RequestMapping("/api/load-shedding")
 public class LoadSheddingController {
 
     private final LoadSheddingService service;
@@ -16,13 +16,23 @@ public class LoadSheddingController {
         this.service = service;
     }
 
-    @PostMapping("/trigger/{zoneId}")
-    public ResponseEntity<String> trigger(@PathVariable Long zoneId) {
-        service.triggerLoadShedding(zoneId);
-        return ResponseEntity.ok("Load shedding triggered");
+    @PostMapping("/trigger/{forecastId}")
+    public LoadSheddingEvent trigger(@PathVariable Long forecastId) {
+        return service.triggerLoadShedding(forecastId);
     }
 
+    @GetMapping("/{id}")
+    public LoadSheddingEvent get(@PathVariable Long id) {
+        return service.getEventById(id);
+    }
+
+    @GetMapping("/zone/{zoneId}")
+    public List<LoadSheddingEvent> byZone(@PathVariable Long zoneId) {
+        return service.getEventsForZone(zoneId);
+    }
+
+    @GetMapping
+    public List<LoadSheddingEvent> all() {
+        return service.getAllEvents();
+    }
 }
-
-
-

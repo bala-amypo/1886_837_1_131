@@ -1,54 +1,34 @@
 package com.example.demo.security;
 
 import com.example.demo.entity.AppUser;
-
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import io.jsonwebtoken.*;
+import java.util.Date;
 
 public class JwtTokenProvider {
 
-    // Simple in-memory token store (sufficient for tests)
-    private final Map<String, Map<String, Object>> tokenStore = new HashMap<>();
+    private final String secret = "secretkey";
+    private final long validity = 3600000;
 
     public String createToken(AppUser user) {
-        String raw = user.getEmail() + ":" + user.getId() + ":" + user.getRole();
-        String token = Base64.getEncoder().encodeToString(raw.getBytes());
-
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("sub", user.getEmail());
-        claims.put("userId", user.getId());
-        claims.put("role", user.getRole());
-
-        tokenStore.put(token, claims);
-        return token;
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("role", user.getRole())
+                .claim("userId", user.getId())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
     }
 
     public boolean validateToken(String token) {
-        return tokenStore.containsKey(token);
+        getClaims(token);
+        return true;
     }
 
     public Claims getClaims(String token) {
-        if (!tokenStore.containsKey(token)) {
-            throw new RuntimeException("Invalid token");
-        }
-        return new Claims(tokenStore.get(token));
-    }
-
-    // 🔹 Minimal Claims class (replaces io.jsonwebtoken.Claims)
-    public static class Claims {
-        private final Map<String, Object> data;
-
-        Claims(Map<String, Object> data) {
-            this.data = data;
-        }
-
-        public String getSubject() {
-            return (String) data.get("sub");
-        }
-
-        public Object get(String key) {
-            return data.get(key);
-        }
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

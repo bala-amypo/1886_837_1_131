@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/zone-restorations")
+@RequestMapping("/api/restorations")
 public class ZoneRestorationController {
 
     private final ZoneRestorationService service;
@@ -16,29 +16,18 @@ public class ZoneRestorationController {
         this.service = service;
     }
 
-    
-    @PostMapping("/{eventId}")
-    public ZoneRestorationRecord restoreZone(@PathVariable Long eventId) {
-        return service.createRecord(eventId);
+    @PostMapping
+    public ZoneRestorationRecord restore(@RequestBody ZoneRestorationRecord r) {
+        return service.restoreZone(r);
     }
 
     @GetMapping("/{id}")
-    public ZoneRestorationRecord getById(@PathVariable Long id) {
+    public ZoneRestorationRecord get(@PathVariable Long id) {
         return service.getRecordById(id);
     }
 
     @GetMapping("/zone/{zoneId}")
-    public List<ZoneRestorationRecord> getByZone(@PathVariable Long zoneId) {
+    public List<ZoneRestorationRecord> byZone(@PathVariable Long zoneId) {
         return service.getRecordsForZone(zoneId);
-    }
-
-    @GetMapping
-    public List<ZoneRestorationRecord> getAll() {
-        return service.getAllRecords();
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.deleteRecord(id);
     }
 }
