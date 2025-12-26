@@ -12,26 +12,28 @@ import java.util.stream.Collectors;
 public class InMemoryZoneRepository implements ZoneRepository {
 
     private final Map<Long, Zone> store = new HashMap<>();
-    private final AtomicLong idGen = new AtomicLong();
+    private final AtomicLong idGen = new AtomicLong(1);
 
     @Override
     public Zone save(Zone zone) {
         if (zone.getId() == null) {
-            zone.setId(idGen.incrementAndGet());
+            zone.setId(idGen.getAndIncrement());
         }
         store.put(zone.getId(), zone);
         return zone;
     }
 
     @Override
-    public List<Zone> findAll() {
-        return new ArrayList<>(store.values());
+    public Optional<Zone> findById(Long id) {
+        return Optional.ofNullable(store.get(id));
     }
 
+    // ✅ REQUIRED BY INTERFACE
     @Override
-    public List<Zone> findActiveZones() {
+    public List<Zone> findByActiveTrueOrderByPriorityLevelAsc() {
         return store.values().stream()
                 .filter(Zone::isActive)
+                .sorted(Comparator.comparingInt(Zone::getPriorityLevel))
                 .collect(Collectors.toList());
     }
 }
