@@ -24,28 +24,35 @@ public class ZoneRestorationServiceImpl implements ZoneRestorationService {
     }
 
     @Override
-    public ZoneRestorationRecord restoreZone(Long eventId) {
-
+    public ZoneRestorationRecord createRecord(Long eventId) {
         LoadSheddingEvent event = eventRepo.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         ZoneRestorationRecord record = new ZoneRestorationRecord();
-        record.setEventId(eventId);
         record.setZoneId(event.getZoneId());
         record.setRestoredAt(Instant.now());
 
         return restorationRepo.save(record);
     }
 
-    // ✅ REQUIRED
     @Override
-    public List<ZoneRestorationRecord> getRecordsForZone(Long zoneId) {
-        return restorationRepo.findByZoneId(zoneId);
+    public ZoneRestorationRecord getRecordById(Long id) {
+        return restorationRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
     }
 
-    // ✅ FIXED (repository has delete, not deleteById)
+    @Override
+    public List<ZoneRestorationRecord> getRecordsForZone(Long zoneId) {
+        return restorationRepo.findByZoneIdOrderByRestoredAtDesc(zoneId);
+    }
+
+    @Override
+    public List<ZoneRestorationRecord> getAllRecords() {
+        return restorationRepo.findAll();
+    }
+
     @Override
     public void deleteRecord(Long id) {
-        restorationRepo.delete(id);
+        restorationRepo.deleteById(id);
     }
 }
