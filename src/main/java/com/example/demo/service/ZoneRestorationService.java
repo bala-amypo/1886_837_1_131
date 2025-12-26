@@ -7,7 +7,10 @@ public interface ZoneRestorationService {
 
     ZoneRestorationRecord restoreZone(ZoneRestorationRecord record);
 
-    List<ZoneRestorationRecord> getAllRecords();
+    ZoneRestorationRecord getRecordById(Long id);
 
+    List<ZoneRestorationRecord> getRecordsForZone(Long zoneId);
+
+    // 🔹 REQUIRED BY COMPILER
     void deleteRecord(Long id);
 }

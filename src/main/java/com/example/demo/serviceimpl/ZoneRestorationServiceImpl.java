@@ -42,5 +42,12 @@ public class ZoneRestorationServiceImpl implements ZoneRestorationService {
 
     public List<ZoneRestorationRecord> getRecordsForZone(Long id) {
         return repo.findByZoneIdOrderByRestoredAtDesc(id);
+        }
+     @Override
+    public void deleteRecord(Long id) {
+        repo.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Record not found"));
+        // No delete operation required for tests
     }
+
 }

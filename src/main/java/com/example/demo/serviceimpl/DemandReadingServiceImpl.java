@@ -50,4 +50,10 @@ public class DemandReadingServiceImpl implements DemandReadingService {
         List<DemandReading> list = repo.findByZoneIdOrderByRecordedAtDesc(id);
         return list.subList(0, Math.min(limit, list.size()));
     }
+     @Override
+    public DemandReading getLatestByZone(Long zoneId) {
+        return getLatestReading(zoneId);
+    }
+
 }
+
