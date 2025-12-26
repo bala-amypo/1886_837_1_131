@@ -1,40 +1,33 @@
-package com.example.demo.service.impl;
+package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.SupplyForecast;
-import com.example.demo.exception.*;
 import com.example.demo.repository.SupplyForecastRepository;
 import com.example.demo.service.SupplyForecastService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SupplyForecastServiceImpl implements SupplyForecastService {
 
-    private final SupplyForecastRepository repo;
+    private final SupplyForecastRepository repository;
 
-    public SupplyForecastServiceImpl(SupplyForecastRepository repo) {
-        this.repo = repo;
+    public SupplyForecastServiceImpl(SupplyForecastRepository repository) {
+        this.repository = repository;
     }
 
-    public SupplyForecast createForecast(SupplyForecast f) {
-        if (f.getAvailableSupplyMW() < 0)
-            throw new BadRequestException(">= 0");
-        if (!f.getForecastStart().isBefore(f.getForecastEnd()))
-            throw new BadRequestException("range");
-        return repo.save(f);
+    @Override
+    public SupplyForecast save(SupplyForecast forecast) {
+        return repository.save(forecast);
     }
 
-    public SupplyForecast updateForecast(Long id, SupplyForecast f) {
-        SupplyForecast e = repo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Forecast not found"));
-        return createForecast(f);
-    }
-
-    public SupplyForecast getLatestForecast() {
-        return repo.findFirstByOrderByGeneratedAtDesc()
-                .orElseThrow(() -> new ResourceNotFoundException("No forecasts"));
-    }
-
+    @Override
     public List<SupplyForecast> getAllForecasts() {
-        return repo.findAll();
+        return repository.findAll();
+    }
+
+    @Override
+    public SupplyForecast getForecastById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

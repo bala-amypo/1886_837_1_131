@@ -1,33 +1,58 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.entity;
 
-import com.example.demo.entity.SupplyForecast;
-import com.example.demo.repository.SupplyForecastRepository;
-import com.example.demo.service.SupplyForecastService;
-import org.springframework.stereotype.Service;
+import jakarta.persistence.*;
+import java.time.Instant;
 
-import java.util.List;
+@Entity
+public class SupplyForecast {
 
-@Service  // ✅ THIS WAS MISSING
-public class SupplyForecastServiceImpl implements SupplyForecastService {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final SupplyForecastRepository repository;
+    private double availableSupplyMW;
 
-    public SupplyForecastServiceImpl(SupplyForecastRepository repository) {
-        this.repository = repository;
+    private Instant forecastStart;
+
+    private Instant forecastEnd;
+
+    private Instant generatedAt;
+
+    // ---------- Getters & Setters ----------
+
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public SupplyForecast save(SupplyForecast forecast) {
-        return repository.save(forecast);
+    public double getAvailableSupplyMW() {
+        return availableSupplyMW;
     }
 
-    @Override
-    public List<SupplyForecast> getAllForecasts() {
-        return repository.findAll();
+    public void setAvailableSupplyMW(double availableSupplyMW) {
+        this.availableSupplyMW = availableSupplyMW;
     }
 
-    @Override
-    public SupplyForecast getForecastById(Long id) {
-        return repository.findById(id).orElse(null);
+    public Instant getForecastStart() {
+        return forecastStart;
+    }
+
+    public void setForecastStart(Instant forecastStart) {
+        this.forecastStart = forecastStart;
+    }
+
+    public Instant getForecastEnd() {
+        return forecastEnd;
+    }
+
+    public void setForecastEnd(Instant forecastEnd) {
+        this.forecastEnd = forecastEnd;
+    }
+
+    public Instant getGeneratedAt() {
+        return generatedAt;
+    }
+
+    public void setGeneratedAt(Instant generatedAt) {
+        this.generatedAt = generatedAt;
     }
 }
