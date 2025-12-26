@@ -1,26 +1,33 @@
-package com.example.demo.entity;
+package com.example.demo.serviceimpl;
 
-import lombok.*;
-import jakarta.persistence.*;
-import java.time.Instant;
+import com.example.demo.entity.SupplyForecast;
+import com.example.demo.repository.SupplyForecastRepository;
+import com.example.demo.service.SupplyForecastService;
+import org.springframework.stereotype.Service;
 
-@Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
-@Builder
-public class SupplyForecast {
+import java.util.List;
 
-    @Id
-    @GeneratedValue
-    private Long id;
+@Service  // ✅ THIS WAS MISSING
+public class SupplyForecastServiceImpl implements SupplyForecastService {
 
-    private Double availableSupplyMW;
-    private Instant forecastStart;
-    private Instant forecastEnd;
-    private Instant generatedAt;
+    private final SupplyForecastRepository repository;
 
-    @PrePersist
-    void gen() {
-        generatedAt = Instant.now();
+    public SupplyForecastServiceImpl(SupplyForecastRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public SupplyForecast save(SupplyForecast forecast) {
+        return repository.save(forecast);
+    }
+
+    @Override
+    public List<SupplyForecast> getAllForecasts() {
+        return repository.findAll();
+    }
+
+    @Override
+    public SupplyForecast getForecastById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }
