@@ -1,19 +1,13 @@
-package com.example.demo;
+package com.example.demo.util;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import java.time.Instant;
 
-@SpringBootApplication(
-    exclude = {
-        JpaRepositoriesAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class
+public class DateTimeUtil {
+
+    private DateTimeUtil() {
     }
-)
-public class DemoApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(DemoApplication.class, args);
+    public static Instant now() {
+        return Instant.now();
     }
 }

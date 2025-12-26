@@ -2,10 +2,15 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 
-@SpringBootApplication
-@ComponentScan(basePackages = "com.example.demo")
+@SpringBootApplication(
+        exclude = {
+                JpaRepositoriesAutoConfiguration.class,
+                HibernateJpaAutoConfiguration.class
+        }
+)
 public class DemoApplication {
 
     public static void main(String[] args) {
