@@ -10,6 +10,10 @@ public interface DemandReadingRepository {
 
     Optional<DemandReading> findById(Long id);
 
-    // 🔑 ADD THIS
     List<DemandReading> findAll();
+
+    // 🔑 REQUIRED BY SERVICE
+    List<DemandReading> findByZoneIdOrderByRecordedAtDesc(Long zoneId);
+
+    Optional<DemandReading> findFirstByZoneIdOrderByRecordedAtDesc(Long zoneId);
 }

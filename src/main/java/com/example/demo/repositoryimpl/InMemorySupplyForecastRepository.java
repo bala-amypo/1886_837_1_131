@@ -5,20 +5,21 @@ import com.example.demo.repository.SupplyForecastRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
 public class InMemorySupplyForecastRepository implements SupplyForecastRepository {
 
     private final Map<Long, SupplyForecast> store = new HashMap<>();
-    private long seq = 1;
+    private final AtomicLong idGen = new AtomicLong();
 
     @Override
-    public SupplyForecast save(SupplyForecast f) {
-        if (f.getId() == null) {
-            f.setId(seq++);
+    public SupplyForecast save(SupplyForecast forecast) {
+        if (forecast.getId() == null) {
+            forecast.setId(idGen.incrementAndGet());
         }
-        store.put(f.getId(), f);
-        return f;
+        store.put(forecast.getId(), forecast);
+        return forecast;
     }
 
     @Override
@@ -27,13 +28,13 @@ public class InMemorySupplyForecastRepository implements SupplyForecastRepositor
     }
 
     @Override
-    public Optional<SupplyForecast> findFirstByOrderByGeneratedAtDesc() {
-        return store.values().stream()
-                .max(Comparator.comparing(SupplyForecast::getGeneratedAt));
+    public List<SupplyForecast> findAll() {
+        return new ArrayList<>(store.values());
     }
 
     @Override
-    public List<SupplyForecast> findAll() {
-        return new ArrayList<>(store.values());
+    public Optional<SupplyForecast> findFirstByOrderByGeneratedAtDesc() {
+        return store.values().stream()
+                .max(Comparator.comparing(SupplyForecast::getGeneratedAt));
     }
 }

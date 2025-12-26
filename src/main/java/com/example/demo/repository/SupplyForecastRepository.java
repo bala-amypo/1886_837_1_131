@@ -10,6 +10,8 @@ public interface SupplyForecastRepository {
 
     Optional<SupplyForecast> findById(Long id);
 
-    // 🔑 REQUIRED
     List<SupplyForecast> findAll();
+
+    // 🔑 REQUIRED BY SERVICE
+    Optional<SupplyForecast> findFirstByOrderByGeneratedAtDesc();
 }
