@@ -1,19 +1,36 @@
 package com.example.demo.dto;
 
-import lombok.*;
-import java.time.Instant;
-
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class ZoneDTO {
+
     private Long id;
     private String zoneName;
     private Integer priorityLevel;
     private Integer population;
     private Boolean active;
-    private Instant createdAt;
-    private Instant updatedAt;
+
+    public ZoneDTO() {}
+
+    public ZoneDTO(Long id, String zoneName, Integer priorityLevel,
+                   Integer population, Boolean active) {
+        this.id = id;
+        this.zoneName = zoneName;
+        this.priorityLevel = priorityLevel;
+        this.population = population;
+        this.active = active;
+    }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getZoneName() { return zoneName; }
+    public void setZoneName(String zoneName) { this.zoneName = zoneName; }
+
+    public Integer getPriorityLevel() { return priorityLevel; }
+    public void setPriorityLevel(Integer priorityLevel) { this.priorityLevel = priorityLevel; }
+
+    public Integer getPopulation() { return population; }
+    public void setPopulation(Integer population) { this.population = population; }
+
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

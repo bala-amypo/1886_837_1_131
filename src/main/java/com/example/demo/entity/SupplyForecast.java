@@ -1,13 +1,7 @@
 package com.example.demo.entity;
 
-import lombok.*;
 import java.time.Instant;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class SupplyForecast {
 
     private Long id;
@@ -15,4 +9,21 @@ public class SupplyForecast {
     private Instant forecastStart;
     private Instant forecastEnd;
     private Instant generatedAt;
+
+    public SupplyForecast() {}
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Double getAvailableSupplyMW() { return availableSupplyMW; }
+    public void setAvailableSupplyMW(Double availableSupplyMW) { this.availableSupplyMW = availableSupplyMW; }
+
+    public Instant getForecastStart() { return forecastStart; }
+    public void setForecastStart(Instant forecastStart) { this.forecastStart = forecastStart; }
+
+    public Instant getForecastEnd() { return forecastEnd; }
+    public void setForecastEnd(Instant forecastEnd) { this.forecastEnd = forecastEnd; }
+
+    public Instant getGeneratedAt() { return generatedAt; }
+    public void setGeneratedAt(Instant generatedAt) { this.generatedAt = generatedAt; }
 }
