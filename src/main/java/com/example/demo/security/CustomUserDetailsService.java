@@ -1,14 +1,10 @@
 package com.example.demo.security;
 
-import org.springframework.security.core.userdetails.*;
-import org.springframework.stereotype.Service;
-
-@Service
-public class CustomUserDetailsService implements UserDetailsService {
-
-    @Override
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-        throw new UsernameNotFoundException("Not implemented");
-    }
+/**
+ * Stub class.
+ * Spring Security is NOT used in this project.
+ * This file exists only to satisfy package structure.
+ */
+public class CustomUserDetailsService {
+    // intentionally empty
 }
