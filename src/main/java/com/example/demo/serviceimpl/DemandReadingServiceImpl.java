@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // 🔴 THIS WAS MISSING
+@Service
 public class DemandReadingServiceImpl implements DemandReadingService {
 
     private final DemandReadingRepository repository;
@@ -30,7 +30,17 @@ public class DemandReadingServiceImpl implements DemandReadingService {
     public DemandReading getLatestReading(Long zoneId) {
         List<DemandReading> readings =
                 repository.findByZoneIdOrderByRecordedAtDesc(zoneId);
-
         return readings.isEmpty() ? null : readings.get(0);
+    }
+
+    // ✅ MISSING METHOD — NOW IMPLEMENTED
+    @Override
+    public List<DemandReading> getRecentReadings(Long zoneId, int limit) {
+        List<DemandReading> readings =
+                repository.findByZoneIdOrderByRecordedAtDesc(zoneId);
+
+        return readings.size() <= limit
+                ? readings
+                : readings.subList(0, limit);
     }
 }
