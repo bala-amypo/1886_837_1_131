@@ -23,16 +23,26 @@ public class SupplyForecastServiceImpl implements SupplyForecastService {
 
     @Override
     public SupplyForecast updateForecast(Long id, SupplyForecast forecast) {
-        forecast.setId(id);
-        return repository.save(forecast);
+        SupplyForecast existing = repository.findById(id).orElse(null);
+
+        if (existing == null) {
+            return null;
+        }
+
+        existing.setAvailableSupplyMW(forecast.getAvailableSupplyMW());
+        existing.setForecastStart(forecast.getForecastStart());
+        existing.setForecastEnd(forecast.getForecastEnd());
+
+        return repository.save(existing);
     }
 
     @Override
     public SupplyForecast getLatestForecast() {
-        return repository.findAll()
-                .stream()
-                .reduce((first, second) -> second)
-                .orElse(null);
+        List<SupplyForecast> forecasts = repository.findAll();
+        if (forecasts.isEmpty()) {
+            return null;
+        }
+        return forecasts.get(forecasts.size() - 1);
     }
 
     @Override
