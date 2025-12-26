@@ -15,7 +15,6 @@ public class SimpleStatusServlet extends HttpServlet {
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("text/plain");
-
         response.getWriter().write(
             "Smart Grid Load Shedding Controller is running"
         );
