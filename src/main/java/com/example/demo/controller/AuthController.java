@@ -40,22 +40,20 @@ public class AuthController {
         return repo.save(user);
     }
 
-    @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest req) {
+  @PostMapping("/register")
+public ResponseEntity<?> register(@RequestBody AuthRequest req) {
 
-        AppUser user = repo.findByEmail(req.getEmail())
-                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
+    // ✅ FIX: define encodedPassword BEFORE using it
+    String encodedPassword = passwordEncoder.encode(req.getPassword());
 
-        if (!encoder.matches(req.getPassword(), user.getPassword()))
-            throw new BadRequestException("Invalid credentials");
+    AppUser user = new AppUser();
+    user.setEmail(req.getEmail());
+    user.setPassword(encodedPassword);   // ← now valid
+    user.setRole("USER");
 
-        String token = provider.createToken(user);
+    userRepository.save(user);
 
-        return new AuthResponse(
-                token,
-                user.getId(),
-                user.getEmail(),
-                user.getRole()
-        );
-    }
+    return ResponseEntity.ok("User registered successfully");
+}
+
 }
