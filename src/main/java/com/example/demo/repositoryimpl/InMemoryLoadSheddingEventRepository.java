@@ -1,4 +1,4 @@
-package com.example.demo.repository.impl;
+package com.example.demo.repositoryimpl;
 
 import com.example.demo.entity.LoadSheddingEvent;
 import com.example.demo.repository.LoadSheddingEventRepository;
@@ -24,19 +24,9 @@ public class InMemoryLoadSheddingEventRepository implements LoadSheddingEventRep
     }
 
     @Override
-    public Optional<LoadSheddingEvent> findById(Long id) {
-        return Optional.ofNullable(store.get(id));
-    }
-
-    @Override
-    public List<LoadSheddingEvent> findAll() {
-        return new ArrayList<>(store.values());
-    }
-
-    @Override
     public List<LoadSheddingEvent> findByZoneId(Long zoneId) {
         return store.values().stream()
-                .filter(e -> e.getZone().getId().equals(zoneId))
+                .filter(e -> e.getZoneId().equals(zoneId))
                 .collect(Collectors.toList());
     }
 }
