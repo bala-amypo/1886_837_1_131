@@ -33,7 +33,7 @@ public class ZoneRestorationRecord {
         this.eventId = eventId;
     }
 
-    // ✅ REQUIRED
+    
     public void setZoneId(Long zoneId) {
         this.zoneId = zoneId;
     }
