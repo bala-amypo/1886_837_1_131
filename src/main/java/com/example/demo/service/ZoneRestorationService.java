@@ -1,16 +1,58 @@
-package com.example.demo.service;
+package com.example.demo.serviceimpl;
 
+import com.example.demo.entity.LoadSheddingEvent;
 import com.example.demo.entity.ZoneRestorationRecord;
+import com.example.demo.repository.LoadSheddingEventRepository;
+import com.example.demo.repository.ZoneRestorationRecordRepository;
+import com.example.demo.service.ZoneRestorationService;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
 import java.util.List;
 
-public interface ZoneRestorationService {
+@Service
+public class ZoneRestorationServiceImpl implements ZoneRestorationService {
 
-    ZoneRestorationRecord restoreZone(ZoneRestorationRecord record);
+    private final ZoneRestorationRecordRepository restorationRepo;
+    private final LoadSheddingEventRepository eventRepo;
 
-    ZoneRestorationRecord getRecordById(Long id);
+    public ZoneRestorationServiceImpl(
+            ZoneRestorationRecordRepository restorationRepo,
+            LoadSheddingEventRepository eventRepo) {
+        this.restorationRepo = restorationRepo;
+        this.eventRepo = eventRepo;
+    }
 
-    List<ZoneRestorationRecord> getRecordsForZone(Long zoneId);
+    @Override
+    public ZoneRestorationRecord restoreZone(Long eventId) {
 
-    // 🔹 REQUIRED BY COMPILER
-    void deleteRecord(Long id);
+        LoadSheddingEvent event = eventRepo.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
+
+        ZoneRestorationRecord record = new ZoneRestorationRecord();
+        record.setEventId(eventId);
+        record.setZoneId(event.getZoneId());
+        record.setRestoredAt(Instant.now());
+
+        return restorationRepo.save(record);
+    }
+
+    
+    @Override
+    public ZoneRestorationRecord getRecordById(Long id) {
+        return restorationRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Record not found"));
+    }
+
+    
+    @Override
+    public List<ZoneRestorationRecord> getRecordsForZone(Long zoneId) {
+        return restorationRepo.findByZoneIdOrderByRestoredAtDesc(zoneId);
+    }
+
+    
+    @Override
+    public void deleteRecord(Long id) {
+        restorationRepo.deleteById(id);
+    }
 }

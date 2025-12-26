@@ -33,7 +33,7 @@ public class InMemoryLoadSheddingEventRepository implements LoadSheddingEventRep
         return new ArrayList<>(store.values());
     }
 
-    // ✅ REQUIRED BY INTERFACE
+    
     @Override
     public List<LoadSheddingEvent> findByZoneId(Long zoneId) {
         return store.values().stream()

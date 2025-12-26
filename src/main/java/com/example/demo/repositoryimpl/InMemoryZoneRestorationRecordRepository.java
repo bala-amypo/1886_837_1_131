@@ -29,7 +29,7 @@ public class InMemoryZoneRestorationRecordRepository
         return Optional.ofNullable(store.get(id));
     }
 
-    // ✅ REQUIRED (ORDERED)
+     (ORDERED)
     @Override
     public List<ZoneRestorationRecord> findByZoneIdOrderByRestoredAtDesc(Long zoneId) {
         return store.values().stream()
@@ -38,13 +38,13 @@ public class InMemoryZoneRestorationRecordRepository
                 .collect(Collectors.toList());
     }
 
-    // ✅ REQUIRED
+    
     @Override
     public List<ZoneRestorationRecord> findAll() {
         return new ArrayList<>(store.values());
     }
 
-    // ✅ REQUIRED
+    
     @Override
     public void deleteById(Long id) {
         store.remove(id);
