@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.*;
+import com.example.demo.dto.AuthRequest;
 import com.example.demo.entity.AppUser;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.AppUserRepository;
-import com.example.demo.security.JwtTokenProvider;
+import org.springframework.http.ResponseEntity;          // ✅ REQUIRED IMPORT
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,48 +11,28 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AppUserRepository repo;
-    private final PasswordEncoder encoder;
-    private final JwtTokenProvider provider;
+    private final AppUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public AuthController(
-            AppUserRepository repo,
-            PasswordEncoder encoder,
-            JwtTokenProvider provider) {
-        this.repo = repo;
-        this.encoder = encoder;
-        this.provider = provider;
+    public AuthController(AppUserRepository userRepository,
+                          PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostMapping("/register")
-    public AppUser register(@RequestBody AuthRequest req) {
+    public ResponseEntity<String> register(@RequestBody AuthRequest req) {
 
-        if (repo.findByEmail(req.getEmail()).isPresent())
-            throw new BadRequestException("unique");
+        // ✅ encode password correctly
+        String encodedPassword = passwordEncoder.encode(req.getPassword());
 
-            AppUser user = new AppUser();
+        AppUser user = new AppUser();
         user.setEmail(req.getEmail());
         user.setPassword(encodedPassword);
         user.setRole("USER");
 
+        userRepository.save(user);
 
-        return repo.save(user);
+        return ResponseEntity.ok("User registered successfully");
     }
-
-  @PostMapping("/register")
-public ResponseEntity<?> register(@RequestBody AuthRequest req) {
-
-    // ✅ FIX: define encodedPassword BEFORE using it
-    String encodedPassword = passwordEncoder.encode(req.getPassword());
-
-    AppUser user = new AppUser();
-    user.setEmail(req.getEmail());
-    user.setPassword(encodedPassword);   // ← now valid
-    user.setRole("USER");
-
-    userRepository.save(user);
-
-    return ResponseEntity.ok("User registered successfully");
-}
-
 }
