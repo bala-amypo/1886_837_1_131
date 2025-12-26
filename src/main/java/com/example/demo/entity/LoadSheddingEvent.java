@@ -1,54 +1,25 @@
 package com.example.demo.entity;
 
+import lombok.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 
+@Entity
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class LoadSheddingEvent {
 
+    @Id
+    @GeneratedValue
     private Long id;
-    private Long zoneId;
-    private Instant startTime;
-    private Instant endTime;
+
+    @ManyToOne
+    private Zone zone;
+
+    private Instant eventStart;
+    private Instant eventEnd;
     private String reason;
-
-    // ---------- Getters ----------
-    public Long getId() {
-        return id;
-    }
-
-    public Long getZoneId() {
-        return zoneId;
-    }
-
-    public Instant getStartTime() {
-        return startTime;
-    }
-
-    public Instant getEndTime() {
-        return endTime;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    // ---------- Setters ----------
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setZoneId(Long zoneId) {
-        this.zoneId = zoneId;
-    }
-
-    public void setStartTime(Instant startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(Instant endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
-    }
+    private Long triggeredByForecastId;
+    private Double expectedDemandReductionMW;
 }

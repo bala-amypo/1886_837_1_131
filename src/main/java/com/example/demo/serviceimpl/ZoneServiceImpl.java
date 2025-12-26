@@ -1,68 +1,56 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Zone;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.exception.*;
 import com.example.demo.repository.ZoneRepository;
 import com.example.demo.service.ZoneService;
-import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 
-@Service
 public class ZoneServiceImpl implements ZoneService {
 
-    private final ZoneRepository zoneRepo;
+    private final ZoneRepository repo;
 
-    public ZoneServiceImpl(ZoneRepository zoneRepo) {
-        this.zoneRepo = zoneRepo;
+    public ZoneServiceImpl(ZoneRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
-    public Zone createZone(Zone zone) {
-        if (zone.getPriorityLevel() < 1) {
+    public Zone createZone(Zone z) {
+        if (z.getPriorityLevel() == null || z.getPriorityLevel() < 1)
             throw new BadRequestException(">= 1");
-        }
 
-        if (zoneRepo.findByZoneName(zone.getZoneName()).isPresent()) {
+        if (repo.findByZoneName(z.getZoneName()).isPresent())
             throw new BadRequestException("unique");
-        }
 
-        zone.setActive(true);
-        zone.setCreatedAt(Instant.now());
-        return zoneRepo.save(zone);
+        z.setActive(true);
+        z.setCreatedAt(Instant.now());
+        return repo.save(z);
     }
 
-    @Override
-    public Zone updateZone(Long id, Zone zone) {
-        Zone existing = zoneRepo.findById(id)
+    public Zone updateZone(Long id, Zone z) {
+        Zone e = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
-
-        existing.setZoneName(zone.getZoneName());
-        existing.setPriorityLevel(zone.getPriorityLevel());
-        existing.setPopulation(zone.getPopulation());
-        existing.setUpdatedAt(Instant.now());
-
-        return zoneRepo.save(existing);
+        e.setZoneName(z.getZoneName());
+        e.setPriorityLevel(z.getPriorityLevel());
+        e.setPopulation(z.getPopulation());
+        e.setUpdatedAt(Instant.now());
+        return repo.save(e);
     }
 
-    @Override
     public Zone getZoneById(Long id) {
-        return zoneRepo.findById(id)
+        return repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
     }
 
-    @Override
     public List<Zone> getAllZones() {
-        return zoneRepo.findAll();
+        return repo.findAll();
     }
 
-    @Override
     public void deactivateZone(Long id) {
-        Zone zone = zoneRepo.findById(id)
+        Zone z = repo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
-        zone.setActive(false);
-        zoneRepo.save(zone);
+        z.setActive(false);
+        repo.save(z);
     }
 }

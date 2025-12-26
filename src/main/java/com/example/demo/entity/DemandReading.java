@@ -1,43 +1,22 @@
 package com.example.demo.entity;
 
+import lombok.*;
+import jakarta.persistence.*;
 import java.time.Instant;
 
+@Entity
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 public class DemandReading {
 
+    @Id
+    @GeneratedValue
     private Long id;
-    private Long zoneId;
-    private double demandMW;
+
+    @ManyToOne
+    private Zone zone;
+
+    private Double demandMW;
     private Instant recordedAt;
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getZoneId() {
-        return zoneId;
-    }
-
-    public double getDemandMW() {
-        return demandMW;
-    }
-
-    public Instant getRecordedAt() {
-        return recordedAt;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setZoneId(Long zoneId) {
-        this.zoneId = zoneId;
-    }
-
-    public void setDemandMW(double demandMW) {
-        this.demandMW = demandMW;
-    }
-
-    public void setRecordedAt(Instant recordedAt) {
-        this.recordedAt = recordedAt;
-    }
 }
