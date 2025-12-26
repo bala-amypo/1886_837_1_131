@@ -5,5 +5,9 @@ import java.util.List;
 
 public interface DemandReadingService {
 
+    DemandReading createReading(DemandReading reading);
+
+    DemandReading getLatestByZone(Long zoneId);
+
     List<DemandReading> getRecentReadings(Long zoneId, int limit);
 }

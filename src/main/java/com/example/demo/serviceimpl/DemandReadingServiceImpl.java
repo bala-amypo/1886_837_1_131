@@ -19,11 +19,8 @@ public class DemandReadingServiceImpl implements DemandReadingService {
     }
 
     @Override
-    public List<DemandReading> getRecentReadings(Long zoneId, int limit) {
-        return repo.findAll().stream()
-                .filter(r -> r.getZone().getId().equals(zoneId))
-                .sorted(Comparator.comparing(DemandReading::getRecordedAt).reversed())
-                .limit(limit)
-                .collect(Collectors.toList());
+    public DemandReading createReading(DemandReading reading) {
+        return readingRepo.save(reading);
     }
+
 }
