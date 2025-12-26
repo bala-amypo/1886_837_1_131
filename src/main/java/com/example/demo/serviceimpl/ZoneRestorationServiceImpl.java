@@ -25,19 +25,20 @@ public class ZoneRestorationServiceImpl implements ZoneRestorationService {
     @Override
     public ZoneRestorationRecord restoreZone(Long eventId) {
 
-        LoadSheddingEvent event = eventRepo.findById(eventId);
-        if (event == null) {
-            throw new RuntimeException("Event not found");
-        }
+        LoadSheddingEvent event = eventRepo.findById(eventId)
+                .orElseThrow(() -> new RuntimeException("Event not found"));
 
         ZoneRestorationRecord record = new ZoneRestorationRecord();
         record.setEventId(eventId);
         record.setZoneId(event.getZoneId());
         record.setRestoredAt(Instant.now());
 
-        // ✅ FIXED LINE (ERROR 4)
-        Instant outageStart = event.getStartTime();
-
         return restorationRepo.save(record);
+    }
+
+    // ✅ REQUIRED BY INTERFACE
+    @Override
+    public void deleteRecord(Long id) {
+        restorationRepo.deleteById(id);
     }
 }

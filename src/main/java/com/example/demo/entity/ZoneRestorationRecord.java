@@ -5,25 +5,40 @@ import java.time.Instant;
 public class ZoneRestorationRecord {
 
     private Long id;
-    private Zone zone;
-    private Instant restoredAt;
     private Long eventId;
-    private String notes;
+    private Long zoneId;
+    private Instant restoredAt;
 
-    public ZoneRestorationRecord() {}
+    public Long getId() {
+        return id;
+    }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getEventId() {
+        return eventId;
+    }
 
-    public Zone getZone() { return zone; }
-    public void setZone(Zone zone) { this.zone = zone; }
+    public Long getZoneId() {
+        return zoneId;
+    }
 
-    public Instant getRestoredAt() { return restoredAt; }
-    public void setRestoredAt(Instant restoredAt) { this.restoredAt = restoredAt; }
+    public Instant getRestoredAt() {
+        return restoredAt;
+    }
 
-    public Long getEventId() { return eventId; }
-    public void setEventId(Long eventId) { this.eventId = eventId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
+    }
+
+    // ✅ REQUIRED
+    public void setZoneId(Long zoneId) {
+        this.zoneId = zoneId;
+    }
+
+    public void setRestoredAt(Instant restoredAt) {
+        this.restoredAt = restoredAt;
+    }
 }
