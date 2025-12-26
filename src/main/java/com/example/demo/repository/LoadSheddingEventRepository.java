@@ -10,6 +10,8 @@ public interface LoadSheddingEventRepository {
 
     Optional<LoadSheddingEvent> findById(Long id);
 
-    // 🔑 REQUIRED
     List<LoadSheddingEvent> findAll();
+
+    // 🔑 ADD THIS (FIX)
+    List<LoadSheddingEvent> findByZoneId(Long zoneId);
 }
