@@ -22,7 +22,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // ✅ REQUIRED by JwtAuthenticationFilter
+    // USED BY JwtAuthenticationFilter
     public Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET_KEY)
