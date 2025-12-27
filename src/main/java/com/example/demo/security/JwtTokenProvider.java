@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-import com.example.demo.entity.AppUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,30 +10,26 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    private static final String SECRET_KEY = "smartgrid-secret-key";
-    private static final long EXPIRATION_TIME = 86400000; // 1 day
+    private static final String SECRET_KEY = "secret-key";
+    private static final long EXPIRATION_TIME = 86400000;
 
-    /* =========================
-       TOKEN CREATION
-       ========================= */
-
-    // ✔ Used by AuthController
-    public String createToken(AppUser user) {
+    public String generateToken(String username) {
         return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("role", user.getRole())
-                .claim("userId", user.getId())
+                .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
     }
 
-    /* =========================
-       TOKEN VALIDATION
-       ========================= */
+    // ✅ REQUIRED by JwtAuthenticationFilter
+    public Claims getClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
+    }
 
-    // ✔ Used by JwtAuthenticationFilter
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
@@ -44,25 +39,5 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    /* =========================
-       CLAIM EXTRACTION
-       ========================= */
-
-    // ✔ Used by JwtAuthenticationFilter
-    public Claims getClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    /* =========================
-       OPTIONAL HELPER
-       ========================= */
-
-    public String getEmailFromToken(String token) {
-        return getClaims(token).getSubject();
     }
 }
