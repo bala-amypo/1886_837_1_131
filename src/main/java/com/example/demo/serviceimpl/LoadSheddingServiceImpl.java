@@ -53,13 +53,11 @@ public class LoadSheddingServiceImpl implements LoadSheddingService {
                 .findFirstByZoneIdOrderByRecordedAtDesc(zone.getId())
                 .orElseThrow(() -> new BadRequestException("No overload"));
 
-        LoadSheddingEvent event = LoadSheddingEvent.builder()
-                .zone(zone)
-                .eventStart(Instant.now())
-                .triggeredByForecastId(forecastId)
-                .expectedDemandReductionMW(reading.getDemandMW())
-                .reason("AUTO")
-                .build();
+            LoadSheddingEvent event = new LoadSheddingEvent();
+        event.setZoneId(zone.getId());
+        event.setDemandMW(reading.getDemandMW());
+        event.setCreatedAt(java.time.Instant.now());
+
 
         eventRepo.save(event);
     }

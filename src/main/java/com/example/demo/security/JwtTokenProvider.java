@@ -24,7 +24,7 @@ public class JwtTokenProvider {
 
     // ✅ REQUIRED by JwtAuthenticationFilter
     public Claims getClaims(String token) {
-        return Jwts.parser()
+        return Jwts.parser()                 // ✅ NOT parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .parseClaimsJws(token)
                 .getBody();
@@ -33,8 +33,8 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jwts.parser()
-                .setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token);
+                    .setSigningKey(SECRET_KEY)
+                    .parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             return false;
