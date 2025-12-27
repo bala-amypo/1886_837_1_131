@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ZoneRestorationRecord;
 import com.example.demo.service.ZoneRestorationService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,43 +10,28 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/restorations")
 public class ZoneRestorationController {
-
-    private final ZoneRestorationService service;
-
-    public ZoneRestorationController(ZoneRestorationService service) {
-        this.service = service;
+    
+    private final ZoneRestorationService zoneRestorationService;
+    
+    public ZoneRestorationController(ZoneRestorationService zoneRestorationService) {
+        this.zoneRestorationService = zoneRestorationService;
     }
 
-    /**
-     * Create a restoration record
-     */
     @PostMapping
-    public ZoneRestorationRecord create(
-            @RequestBody ZoneRestorationRecord record) {
-        return service.createRecord(record);
+    public ResponseEntity<ZoneRestorationRecord> restoreZone(@RequestBody ZoneRestorationRecord record) {
+        ZoneRestorationRecord restorationRecord = zoneRestorationService.restoreZone(record);
+        return ResponseEntity.ok(restorationRecord);
     }
 
-    /**
-     * Get restoration record by ID
-     */
     @GetMapping("/{id}")
-    public ZoneRestorationRecord getById(@PathVariable Long id) {
-        return service.getRecordById(id);
+    public ResponseEntity<ZoneRestorationRecord> getRecord(@PathVariable Long id) {
+        ZoneRestorationRecord record = zoneRestorationService.getRecordById(id);
+        return ResponseEntity.ok(record);
     }
 
-    /**
-     * Get all restoration records for a zone
-     */
     @GetMapping("/zone/{zoneId}")
-    public List<ZoneRestorationRecord> getByZone(@PathVariable Long zoneId) {
-        return service.getRecordsForZone(zoneId);
-    }
-
-    /**
-     * Delete a restoration record
-     */
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.deleteRecord(id);
+    public ResponseEntity<List<ZoneRestorationRecord>> getRecordsForZone(@PathVariable Long zoneId) {
+        List<ZoneRestorationRecord> records = zoneRestorationService.getRecordsForZone(zoneId);
+        return ResponseEntity.ok(records);
     }
 }
