@@ -23,7 +23,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())
-                .claim("role", user.getRole())
+                .claim("role", uAser.getRole())
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(key)
