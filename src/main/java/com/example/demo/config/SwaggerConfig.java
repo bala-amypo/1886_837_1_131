@@ -1,41 +1,12 @@
-// package com.example.demo.config;
-
-// import io.swagger.v3.oas.models.OpenAPI;
-// import io.swagger.v3.oas.models.info.Info;
-// import io.swagger.v3.oas.models.servers.Server;
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
-
-// import java.util.List;
-
-// @Configuration
-// public class SwaggerConfig {
-
-//     @Bean
-//     public OpenAPI customOpenAPI() {
-//         return new OpenAPI()
-//                 .info(new Info()
-//                         .title("Smart Grid Load Shedding Controller API")
-//                         .version("1.0")
-//                         .description("API for managing smart grid load shedding operations"))
-//                 .servers(List.of(
-//                         new Server().url("https://9213.408procr.amypo.ai/")
-//                 ));
-//     }
-// }
-
 package com.example.demo.config;
 
-import java.util.List;
-
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Components;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
-import io.swagger.v3.oas.models.servers.Server;
+import java.util.List;
 
 @Configuration
 public class SwaggerConfig {
@@ -43,25 +14,12 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-
-                // ✅ EXISTING SERVER CONFIG (UNCHANGED)
+                .info(new Info()
+                        .title("Smart Grid Load Shedding Controller API")
+                        .version("1.0")
+                        .description("API for managing smart grid load shedding operations"))
                 .servers(List.of(
                         new Server().url("https://9213.408procr.amypo.ai/")
-                ))
-
-                // ✅ ADD JWT SECURITY SCHEME
-                .components(new Components()
-                        .addSecuritySchemes("bearerAuth",
-                                new SecurityScheme()
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")
-                        )
-                )
-
-                // ✅ APPLY SECURITY GLOBALLY
-                .addSecurityItem(
-                        new SecurityRequirement().addList("bearerAuth")
-                );
+                ));
     }
 }
